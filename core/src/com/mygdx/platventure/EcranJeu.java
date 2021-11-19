@@ -4,19 +4,19 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class GameScreen extends ScreenAdapter {
+public class EcranJeu extends ScreenAdapter {
     PlatVenture platVenture;
     Texture texture;
 
-    public GameScreen(PlatVenture platVenture) {
+    public EcranJeu(PlatVenture platVenture) {
         this.platVenture = platVenture;
+        this.platVenture.setNiveau(new Niveau("levels/level_001.txt"));
     }
 
     @Override
     public void show() {
         //Initialisation des données d'affichages.
         this.texture = new Texture("images/Back.png");
-
     }
 
     @Override

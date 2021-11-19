@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 
-public class TitleScreen extends ScreenAdapter {
+public class EcranTitre extends ScreenAdapter {
     PlatVenture platVenture;
     Texture texture;
 
-    public TitleScreen(PlatVenture platVenture) {
+    public EcranTitre(PlatVenture platVenture) {
         this.platVenture = platVenture;
     }
 
@@ -21,7 +21,7 @@ public class TitleScreen extends ScreenAdapter {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                platVenture.setScreen(new GameScreen(platVenture));
+                platVenture.setScreen(new EcranJeu(platVenture));
             }
         }, 3);
     }
