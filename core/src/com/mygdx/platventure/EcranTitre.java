@@ -1,6 +1,8 @@
 package com.mygdx.platventure;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
@@ -11,6 +13,8 @@ public class EcranTitre extends ScreenAdapter {
 
     public EcranTitre(PlatVenture platVenture) {
         this.platVenture = platVenture;
+        Music musiqueIntro = Gdx.audio.newMusic(Gdx.files.internal("sounds/win.ogg"));
+        musiqueIntro.play();
     }
 
     @Override
