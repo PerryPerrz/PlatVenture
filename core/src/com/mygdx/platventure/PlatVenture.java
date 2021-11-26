@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class PlatVenture extends Game {
     //Classe qui gère les données communes à tous les écrans et lance le jeu.
-    SpriteBatch batch;
-    Niveau niveau;
+    private SpriteBatch batch;
+    private Niveau niveau;
 
     @Override
     public void create() {

@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class EcranJeu extends ScreenAdapter {
-    PlatVenture platVenture;
-    Texture texture;
+    private final PlatVenture platVenture;
+    private Texture texture;
 
     public EcranJeu(PlatVenture platVenture) {
         this.platVenture = platVenture;

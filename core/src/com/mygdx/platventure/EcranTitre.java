@@ -8,19 +8,19 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 
 public class EcranTitre extends ScreenAdapter {
-    PlatVenture platVenture;
-    Texture texture;
+    private final PlatVenture platVenture;
+    private Texture texture;
 
     public EcranTitre(PlatVenture platVenture) {
         this.platVenture = platVenture;
-        Music musiqueIntro = Gdx.audio.newMusic(Gdx.files.internal("sounds/win.ogg"));
-        musiqueIntro.play();
     }
 
     @Override
     public void show() {
         //Initialisation des données d'affichages.
         this.texture = new Texture("images/Intro.png");
+        Music musiqueIntro = Gdx.audio.newMusic(Gdx.files.internal("sounds/win.ogg"));
+        musiqueIntro.play();
         //Initialisation du timer
         Timer.schedule(new Timer.Task() {
             @Override
@@ -35,7 +35,7 @@ public class EcranTitre extends ScreenAdapter {
         //Raffraichissement de l'affichage.
         ScreenUtils.clear(0, 0, 0, 0);
         this.platVenture.batch.begin();
-        this.platVenture.batch.draw(this.texture, 0, 0);
+        this.platVenture.batch.draw(this.texture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.platVenture.batch.end();
     }
 }
