@@ -6,6 +6,7 @@ import com.mygdx.platventure.elements.Brique;
 import com.mygdx.platventure.elements.Element;
 import com.mygdx.platventure.elements.gemmes.GemmeJaune;
 import com.mygdx.platventure.elements.gemmes.GemmeRouge;
+import com.mygdx.platventure.elements.plateformes.Eau;
 import com.mygdx.platventure.elements.plateformes.PlateformeDroite;
 import com.mygdx.platventure.elements.plateformes.PlateformeGauche;
 import com.mygdx.platventure.elements.plateformes.PlateformeMilieu;
@@ -87,6 +88,14 @@ public class Monde { //Le monde de PlatVenture
                 gemmeRouge.setFixture();    //On Set la Fixture de l'élement
                 this.elementsDuMonde.add(gemmeRouge);   //On ajoute l'élement dans le monde
                 System.out.println(gemmeRouge.getPosition());
+                break;
+            case 'W' :
+                Eau eau = new Eau(new Vector2(i,(tailleColonneTableau-j)-1));
+                eau.setBodyDef();    // On Set le BodyDef de l'élement
+                eau.createBody(this.monde);  //On Set le Body de l'élement
+                eau.setFixture();    //On Set la Fixture de l'élement
+                this.elementsDuMonde.add(eau);   //On ajoute l'élement dans le monde
+                System.out.println(eau.getPosition());
                 break;
         }
     }
