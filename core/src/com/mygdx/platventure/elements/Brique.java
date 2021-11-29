@@ -21,10 +21,10 @@ public class Brique extends Element {
 
         //Création des briques
         Vector2[] vectors = new Vector2[4]; //Forme de l'objet
-        vectors[0] = new Vector2(0,0);
-        vectors[1] = new Vector2(0,1);
-        vectors[2] = new Vector2(1,1);
-        vectors[3] = new Vector2(1,0);
+        vectors[0] = new Vector2(0, 0);
+        vectors[1] = new Vector2(0, 1);
+        vectors[2] = new Vector2(1, 1);
+        vectors[3] = new Vector2(1, 0);
 
         this.forme.set(vectors); //On met les 4 points dans la forme. On dit que la forme d'une brique correspond à 4 points
     }
@@ -38,7 +38,7 @@ public class Brique extends Element {
 
     @Override
     public void setFixture() { //Caractéristiques physiques du body
-        if(this.bodyDef != null && this.body != null){
+        if (this.bodyDef != null && this.body != null) {
             FixtureDef fixture = new FixtureDef();
             fixture.shape = forme;
             fixture.density = densite;

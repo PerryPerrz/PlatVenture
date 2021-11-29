@@ -10,7 +10,7 @@ public abstract class Element {
     protected Body body; //Caractéristique physique de l'élement
     protected BodyDef bodyDef; //Caractéristiques non physique de l'élement
 
-    public Element(Vector2 position){
+    public Element(Vector2 position) {
         this.position = position;
     }
 
@@ -18,7 +18,7 @@ public abstract class Element {
 
     public abstract void setFixture();
 
-    public void createBody(World monde){
+    public void createBody(World monde) {
         this.body = monde.createBody(this.bodyDef);
     }
 

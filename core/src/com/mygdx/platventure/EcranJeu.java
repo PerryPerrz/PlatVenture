@@ -12,11 +12,11 @@ import com.mygdx.platventure.elements.Niveau;
 public class EcranJeu extends ScreenAdapter {
     private final PlatVenture platVenture;
     private Texture texture;
-    private OrthographicCamera camera;
-    private FitViewport vp;
-    private Niveau niveau;
-    private Monde monde;
-    private Box2DDebugRenderer debug;
+    private final OrthographicCamera camera;
+    private final FitViewport vp;
+    private final Niveau niveau;
+    private final Monde monde;
+    private final Box2DDebugRenderer debug;
 
     public EcranJeu(PlatVenture platVenture) {
         this.platVenture = platVenture;
@@ -53,7 +53,7 @@ public class EcranJeu extends ScreenAdapter {
         //this.platVenture.getBatch().draw(this.texture, 0, 0, this.niveau.getLargeur(), this.niveau.getHauteur());
 
         //Mode debug
-        this.debug.render(this.monde.getMonde(),camera.combined);
+        this.debug.render(this.monde.getMonde(), camera.combined);
 
         this.platVenture.getBatch().end();
     }

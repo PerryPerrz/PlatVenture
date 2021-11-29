@@ -14,8 +14,8 @@ public abstract class Gemmes extends Element {
         super(position);
         this.forme = new CircleShape();
 
-        this.forme.setPosition(new Vector2(1/2f,1/2f)); //1/2 est non 0 car sinon, la gemme se trouve dans la plateforme, il faut donc la décaller. Sinon, il prend le centre de la gemme et le met en bas à droite de sa case.
-        this.forme.setRadius(1/4f);
+        this.forme.setPosition(new Vector2(1 / 2f, 1 / 2f)); //1/2 est non 0 car sinon, la gemme se trouve dans la plateforme, il faut donc la décaller. Sinon, il prend le centre de la gemme et le met en bas à droite de sa case.
+        this.forme.setRadius(1 / 4f);
     }
 
     @Override
@@ -27,7 +27,7 @@ public abstract class Gemmes extends Element {
 
     @Override
     public void setFixture() { //Caractéristiques physiques du body
-        if(this.bodyDef != null && this.body != null){
+        if (this.bodyDef != null && this.body != null) {
             FixtureDef fixture = new FixtureDef();
             fixture.shape = forme;
             fixture.isSensor = true; //La gemme est traversable
@@ -36,5 +36,6 @@ public abstract class Gemmes extends Element {
         this.forme.dispose();
     }
 
+    //Fonction qui retourne la valeur d'une gemme selon son type (rouge ou jaune)
     public abstract int getValeurGemme();
 }

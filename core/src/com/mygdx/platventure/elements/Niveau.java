@@ -36,7 +36,7 @@ public class Niveau {
         return this.hauteur;
     }
 
-    public char[][] getTabNiveau(){
+    public char[][] getTabNiveau() {
         return this.tabNiveau;
     }
 }
