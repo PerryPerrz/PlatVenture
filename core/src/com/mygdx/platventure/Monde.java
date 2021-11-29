@@ -2,6 +2,9 @@ package com.mygdx.platventure;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.platventure.gemmes.GemmeJaune;
+import com.mygdx.platventure.gemmes.GemmeRouge;
+import com.mygdx.platventure.gemmes.Gemmes;
 import com.mygdx.platventure.plateformes.PlateformeDroite;
 import com.mygdx.platventure.plateformes.PlateformeGauche;
 import com.mygdx.platventure.plateformes.PlateformeMilieu;
@@ -67,6 +70,22 @@ public class Monde { //Le monde de PlatVenture
                 plateformeDroite.setFixture();    //On Set la Fixture de l'élement
                 this.elementsDuMonde.add(plateformeDroite);   //On ajoute l'élement dans le monde
                 System.out.println(plateformeDroite.getPosition());
+                break;
+            case '1' :
+                GemmeJaune gemmeJaune = new GemmeJaune(new Vector2(i,(tailleColonneTableau-j)-1));
+                gemmeJaune.setBodyDef();    // On Set le BodyDef de l'élement
+                gemmeJaune.createBody(this.monde);  //On Set le Body de l'élement
+                gemmeJaune.setFixture();    //On Set la Fixture de l'élement
+                this.elementsDuMonde.add(gemmeJaune);   //On ajoute l'élement dans le monde
+                System.out.println(gemmeJaune.getPosition());
+                break;
+            case '2' :
+                GemmeRouge gemmeRouge = new GemmeRouge(new Vector2(i,(tailleColonneTableau-j)-1));
+                gemmeRouge.setBodyDef();    // On Set le BodyDef de l'élement
+                gemmeRouge.createBody(this.monde);  //On Set le Body de l'élement
+                gemmeRouge.setFixture();    //On Set la Fixture de l'élement
+                this.elementsDuMonde.add(gemmeRouge);   //On ajoute l'élement dans le monde
+                System.out.println(gemmeRouge.getPosition());
                 break;
         }
     }
