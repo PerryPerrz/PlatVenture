@@ -27,4 +27,12 @@ public class Niveau {
             }
         }
     }
+
+    public int getLargeur() {
+        return this.largeur;
+    }
+
+    public int getHauteur() {
+        return this.hauteur;
+    }
 }

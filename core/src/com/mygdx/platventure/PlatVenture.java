@@ -22,4 +22,12 @@ public class PlatVenture extends Game {
     public void setNiveau(Niveau niveau) {
         this.niveau = niveau;
     }
+
+    public SpriteBatch getBatch() {
+        return this.batch;
+    }
+
+    public Niveau getNiveau() {
+        return this.niveau;
+    }
 }

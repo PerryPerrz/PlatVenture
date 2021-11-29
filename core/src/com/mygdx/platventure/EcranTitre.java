@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 
 public class EcranTitre extends ScreenAdapter {
-    private final PlatVenture platVenture;
+    PlatVenture platVenture;
     private Texture texture;
 
     public EcranTitre(PlatVenture platVenture) {
@@ -34,8 +34,8 @@ public class EcranTitre extends ScreenAdapter {
     public void render(float delta) {
         //Raffraichissement de l'affichage.
         ScreenUtils.clear(0, 0, 0, 0);
-        this.platVenture.batch.begin();
-        this.platVenture.batch.draw(this.texture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        this.platVenture.batch.end();
+        this.platVenture.getBatch().begin();
+        this.platVenture.getBatch().draw(this.texture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this.platVenture.getBatch().end();
     }
 }
