@@ -1,4 +1,4 @@
-package com.mygdx.platventure.gemmes;
+package com.mygdx.platventure.elements.gemmes;
 
 import com.badlogic.gdx.math.Vector2;
 

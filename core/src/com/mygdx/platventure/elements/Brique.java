@@ -1,12 +1,11 @@
-package com.mygdx.platventure;
+package com.mygdx.platventure.elements;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 
-public class Brique extends Element{
+public class Brique extends Element {
 
     private final PolygonShape forme;
     private final float densite;

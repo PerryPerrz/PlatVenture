@@ -1,13 +1,10 @@
-package com.mygdx.platventure.gemmes;
+package com.mygdx.platventure.elements.gemmes;
 
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.mygdx.platventure.Element;
+import com.mygdx.platventure.elements.Element;
 
 public abstract class Gemmes extends Element {
 

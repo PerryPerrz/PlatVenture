@@ -1,4 +1,4 @@
-package com.mygdx.platventure;
+package com.mygdx.platventure.elements;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;

@@ -1,19 +1,18 @@
-package com.mygdx.platventure.plateformes;
+package com.mygdx.platventure.elements.plateformes;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.mygdx.platventure.Element;
+import com.mygdx.platventure.elements.Element;
 
-public class PlateformeDroite extends Element {
-
+public class PlateformeGauche extends Element {
     private final PolygonShape forme;
     private final float densite;
     private final float restitution;
     private final float friction;
 
-    public PlateformeDroite(Vector2 position){
+    public PlateformeGauche(Vector2 position){
         super(position);
         this.forme = new PolygonShape();
         this.densite = 1f;
@@ -22,15 +21,14 @@ public class PlateformeDroite extends Element {
 
         //Création des briques, à l'aide des 4 points d'une brique, on les créent tous en bas à gauche puis sont placées. créer/placé/créer/placé etc...
         Vector2[] vectors = new Vector2[5]; //Forme de l'objet
-        vectors[0] = new Vector2(0,0);
+        vectors[0] = new Vector2(0,(3/4f)/2f);
         vectors[1] = new Vector2(0,3/4f);
         vectors[2] = new Vector2(1,3/4f);
-        vectors[3] = new Vector2(1,(3/4f)/2f);
+        vectors[3] = new Vector2(1,0);
         vectors[4] = new Vector2(1/2f,0);
 
         this.forme.set(vectors); //On met les 4 points dans la forme. On dit que la forme d'une brique correspond à 4 points
     }
-
     @Override
     public void setBodyDef() {
         this.bodyDef = new BodyDef();

@@ -2,12 +2,13 @@ package com.mygdx.platventure;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.mygdx.platventure.gemmes.GemmeJaune;
-import com.mygdx.platventure.gemmes.GemmeRouge;
-import com.mygdx.platventure.gemmes.Gemmes;
-import com.mygdx.platventure.plateformes.PlateformeDroite;
-import com.mygdx.platventure.plateformes.PlateformeGauche;
-import com.mygdx.platventure.plateformes.PlateformeMilieu;
+import com.mygdx.platventure.elements.Brique;
+import com.mygdx.platventure.elements.Element;
+import com.mygdx.platventure.elements.gemmes.GemmeJaune;
+import com.mygdx.platventure.elements.gemmes.GemmeRouge;
+import com.mygdx.platventure.elements.plateformes.PlateformeDroite;
+import com.mygdx.platventure.elements.plateformes.PlateformeGauche;
+import com.mygdx.platventure.elements.plateformes.PlateformeMilieu;
 
 import java.util.ArrayList;
 
