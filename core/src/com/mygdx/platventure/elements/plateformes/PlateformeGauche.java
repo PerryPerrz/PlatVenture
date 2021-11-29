@@ -46,7 +46,7 @@ public class PlateformeGauche extends Element {
             fixture.restitution = restitution;
             fixture.friction = friction;
 
-            getBody().createFixture(fixture); //On ajoute la fixture au body des briques.
+            getBody().createFixture(fixture); //On ajoute la fixture au body des plateformes gauches.
         }
         this.forme.dispose();
     }

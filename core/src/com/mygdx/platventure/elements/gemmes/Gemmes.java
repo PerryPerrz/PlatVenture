@@ -31,7 +31,7 @@ public abstract class Gemmes extends Element {
             FixtureDef fixture = new FixtureDef();
             fixture.shape = forme;
             fixture.isSensor = true; //La gemme est traversable
-            getBody().createFixture(fixture); //On ajoute la fixture au body des briques.
+            getBody().createFixture(fixture); //On ajoute la fixture au body des gemmes.
         }
         this.forme.dispose();
     }

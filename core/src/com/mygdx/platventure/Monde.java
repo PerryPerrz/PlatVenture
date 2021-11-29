@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.platventure.elements.Brique;
 import com.mygdx.platventure.elements.Element;
+import com.mygdx.platventure.elements.Personnage;
 import com.mygdx.platventure.elements.Sortie;
 import com.mygdx.platventure.elements.gemmes.GemmeJaune;
 import com.mygdx.platventure.elements.gemmes.GemmeRouge;
@@ -44,7 +45,8 @@ public class Monde { //Le monde de PlatVenture
             case 'G':
             case 'H':
             case 'I':
-                elementTemporaire = new Brique(new Vector2(i, (tailleColonneTableau - j) - 1));
+                //La lecture se faisant dans le sens inverse, il faut faire une symétrie par rapport à l'axe des abscisses : si y est en bas à droite, on le met en haut à droite et de ce fait, l'élement est bien placé.
+                elementTemporaire = new Brique(new Vector2(i, (tailleColonneTableau - j) - 1)); //(tailleColonneTableau - j) - 1 pour remettre l'image à l'endroit. (le - 1, la lecture était décallée d'une case, une ligne non existante était affichée, tous les élements étaient décalés) le - 1 enlève ce décallage.
                 break;
             //Case représentant la plateforme gauche du jeu.
             case 'J':
@@ -73,6 +75,9 @@ public class Monde { //Le monde de PlatVenture
             //Case représentant la sortie du jeu.
             case 'Z':
                 elementTemporaire = new Sortie(new Vector2(i, (tailleColonneTableau - j) - 1));
+                break;
+            case 'P':
+                elementTemporaire = new Personnage(new Vector2(i, (tailleColonneTableau - j) - 1));
                 break;
         }
 

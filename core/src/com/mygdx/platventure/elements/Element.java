@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public abstract class Element {
     protected Vector2 position; //(x,y) donc la position d'un élement
-    protected Body body; //Caractéristique physique de l'élement
+    protected Body body; //Caractéristiques physiques de l'élement
     protected BodyDef bodyDef; //Caractéristiques non physique de l'élement
 
     public Element(Vector2 position) {
