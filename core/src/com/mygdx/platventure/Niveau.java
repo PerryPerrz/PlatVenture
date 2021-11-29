@@ -22,7 +22,7 @@ public class Niveau {
 
         tabNiveau = new char[largeur][hauteur];
         for (int i = 1; i < hauteur + 1; i++) {
-            for (int j = 0; j < largeur - 1; j++) {
+            for (int j = 0; j < largeur; j++) {
                 tabNiveau[j][i - 1] = data[i].charAt(j);
             }
         }
