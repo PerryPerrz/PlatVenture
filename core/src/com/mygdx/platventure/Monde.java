@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.platventure.elements.Brique;
 import com.mygdx.platventure.elements.Element;
+import com.mygdx.platventure.elements.Sortie;
 import com.mygdx.platventure.elements.gemmes.GemmeJaune;
 import com.mygdx.platventure.elements.gemmes.GemmeRouge;
 import com.mygdx.platventure.elements.plateformes.Eau;
@@ -96,6 +97,14 @@ public class Monde { //Le monde de PlatVenture
                 eau.setFixture();    //On Set la Fixture de l'élement
                 this.elementsDuMonde.add(eau);   //On ajoute l'élement dans le monde
                 System.out.println(eau.getPosition());
+                break;
+            case 'Z' :
+                Sortie sortie = new Sortie(new Vector2(i,(tailleColonneTableau-j)-1));
+                sortie.setBodyDef();    // On Set le BodyDef de l'élement
+                sortie.createBody(this.monde);  //On Set le Body de l'élement
+                sortie.setFixture();    //On Set la Fixture de l'élement
+                this.elementsDuMonde.add(sortie);   //On ajoute l'élement dans le monde
+                System.out.println(sortie.getPosition());
                 break;
         }
     }
