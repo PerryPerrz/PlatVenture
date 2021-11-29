@@ -1,4 +1,4 @@
-package com.mygdx.platventure;
+package com.mygdx.platventure.ecrans;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.platventure.Monde;
+import com.mygdx.platventure.PlatVenture;
 import com.mygdx.platventure.elements.Niveau;
 
 public class EcranJeu extends ScreenAdapter {

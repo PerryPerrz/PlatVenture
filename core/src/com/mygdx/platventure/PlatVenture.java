@@ -2,6 +2,7 @@ package com.mygdx.platventure;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.platventure.ecrans.EcranTitre;
 
 public class PlatVenture extends Game {
     //Classe qui gère les données communes à tous les écrans et lance le jeu.
