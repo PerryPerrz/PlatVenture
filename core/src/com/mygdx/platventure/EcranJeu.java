@@ -12,10 +12,13 @@ public class EcranJeu extends ScreenAdapter {
     private Texture texture;
     private OrthographicCamera camera;
     private FitViewport vp;
+    private Niveau niveau;
+    private Monde monde;
 
     public EcranJeu(PlatVenture platVenture) {
         this.platVenture = platVenture;
-        this.platVenture.setNiveau(new Niveau("levels/level_001.txt"));
+        this.niveau = new Niveau("levels/level_001.txt");
+        this.monde = new Monde(niveau.getTabNiveau());
 
         int imL = Gdx.graphics.getWidth();
         int imH = Gdx.graphics.getHeight();
@@ -43,7 +46,7 @@ public class EcranJeu extends ScreenAdapter {
         //Raffraichissement de l'affichage.
         ScreenUtils.clear(0, 0, 0, 0);
         this.platVenture.getBatch().begin();
-        this.platVenture.getBatch().draw(this.texture, 0, 0, platVenture.getNiveau().getLargeur(), platVenture.getNiveau().getHauteur());
+        this.platVenture.getBatch().draw(this.texture, 0, 0, this.niveau.getLargeur(), this.niveau.getHauteur());
         this.platVenture.getBatch().end();
     }
 
