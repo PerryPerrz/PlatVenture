@@ -98,6 +98,8 @@ public class EcouteurEcranJeu implements InputProcessor {
     }
 
     public Vector2 getForce() {
-        return force;
+        Vector2 vectorTemp = new Vector2(this.force);
+        this.force.y = 0; //On reset la force verticale. (éviter ld spam des jumps)
+        return vectorTemp;
     }
 }
