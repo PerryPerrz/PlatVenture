@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.platventure.EcouteurEcranJeu;
 import com.mygdx.platventure.Monde;
 import com.mygdx.platventure.PlatVenture;
 import com.mygdx.platventure.elements.Niveau;
@@ -19,12 +20,14 @@ public class EcranJeu extends ScreenAdapter {
     private final Niveau niveau;
     private final Monde monde;
     private final Box2DDebugRenderer debug;
+    private final EcouteurEcranJeu mouvementJoueur;
 
     public EcranJeu(PlatVenture platVenture) {
         this.platVenture = platVenture;
         this.niveau = new Niveau("levels/level_001.txt");
         this.monde = new Monde(niveau.getTabNiveau());
         this.debug = new Box2DDebugRenderer();
+        this.mouvementJoueur = new EcouteurEcranJeu();
 
         int imL = Gdx.graphics.getWidth();
         int imH = Gdx.graphics.getHeight();
@@ -37,14 +40,25 @@ public class EcranJeu extends ScreenAdapter {
     }
 
     @Override
-    public void show() {
+    public void show() { //Quand les données sur l'écran apparaissent, au début de l'appli (ce fait une seule fois)
         //Initialisation des données d'affichages.
         this.texture = new Texture("images/Back.png");
+
+        //On dit à l'écran de jeu que cet écouteur l'écoute.
+        Gdx.input.setInputProcessor(this.mouvementJoueur);
     }
 
     @Override
-    public void render(float delta) {
-        //Mise en place de la caméra
+    public void render(float delta) { //Raffraichit l'affichage tous les x temps
+        //On applique la force sur le personnage.
+        this.monde.getPersonnage().appliquerForce(this.mouvementJoueur.getForce());
+
+        //On met à jour les élements graphiques du monde par rapport à leurs données
+        this.monde.update();
+        //Définition du step du monde
+        monde.getMonde().step(Gdx.graphics.getDeltaTime(), 6, 2);
+
+        //Mise en place de la caméra.
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
         this.platVenture.getBatch().setProjectionMatrix(camera.combined);
@@ -61,7 +75,7 @@ public class EcranJeu extends ScreenAdapter {
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(int width, int height) { //Fonction appelée lorsque l'utilisateur change la taille de la fenêtre, et ce fait tout au début, lors de la création de la fenêtre.
         vp.update(width, height); //Maj ViewPort
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0); //On met la position de la cam
         camera.update(); //Maj Caméra

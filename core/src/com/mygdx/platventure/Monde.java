@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class Monde { //Le monde de PlatVenture
     private final World monde; //Le monde du jeu en général, le monde ds n'importe quel jeu
     private final ArrayList<Element> elementsDuMonde;
+    private Personnage personnage;
 
     public Monde(char[][] tableauNiveau) {
         this.monde = new World(new Vector2(0, -10f), true); //-10 pour la gravité
@@ -27,7 +28,6 @@ public class Monde { //Le monde de PlatVenture
             for (int j = 0; j < tableauNiveau[i].length; ++j) {
                 creerElementDuMonde(tableauNiveau, i, j, tableauNiveau[i].length);
             }
-
         }
     }
 
@@ -76,8 +76,10 @@ public class Monde { //Le monde de PlatVenture
             case 'Z':
                 elementTemporaire = new Sortie(new Vector2(i, (tailleColonneTableau - j) - 1));
                 break;
+            //Case représentant le perosnnage du jeu.
             case 'P':
-                elementTemporaire = new Personnage(new Vector2(i, (tailleColonneTableau - j) - 1));
+                this.personnage = new Personnage(new Vector2(i, (tailleColonneTableau - j) - 1));
+                elementTemporaire = this.personnage;
                 break;
         }
 
@@ -87,7 +89,6 @@ public class Monde { //Le monde de PlatVenture
             elementTemporaire.createBody(this.monde);  //On Set le Body de l'élement
             elementTemporaire.setFixture();    //On Set la Fixture de l'élement
             this.elementsDuMonde.add(elementTemporaire);   //On ajoute l'élement dans le monde
-            System.out.println(elementTemporaire.getPosition());
         }
 
         //Si c'est du vide, on ne fait rien.
@@ -95,5 +96,18 @@ public class Monde { //Le monde de PlatVenture
 
     public World getMonde() {
         return this.monde;
+    }
+
+    public Personnage getPersonnage(){
+        return this.personnage;
+    }
+
+    //Fonction qui met à jour le monde graphique à partir des données (maj l'affichage)
+    public void update(){
+     for (Element e : this.elementsDuMonde){
+         if(e != null){ //On vérifie que l'élement n'est pas vide (le vide du niveau)
+             e.setPosition(e.getBody().getPosition()); //On prend la position dans son body (dans les données) et on met cette position dans l'affichage.
+         }
+     }
     }
 }

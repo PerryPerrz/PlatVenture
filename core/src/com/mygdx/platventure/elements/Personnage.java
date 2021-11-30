@@ -40,6 +40,8 @@ public class Personnage extends Element {
         this.bodyDef = new BodyDef();
         this.bodyDef.type = BodyDef.BodyType.DynamicBody;
         this.bodyDef.position.set(this.position);
+        //On empêche le personnage de tourner
+        this.bodyDef.fixedRotation = true;
     }
 
     @Override
@@ -64,5 +66,14 @@ public class Personnage extends Element {
             getBody().createFixture(fixtureCorps); //On ajoute la fixture au body du personnage.
         }
         this.forme.dispose();
+    }
+
+    //Fonction qui dit au joueur de se déplacer, qui applique le mouvement/la force au joueur.
+    public void appliquerForce(Vector2 force){
+        //Je n'applique la force qui si la force verticale est finie/ à fini d'être appliqué, que le personnage touche le sol
+        if(this.getBody().getLinearVelocity().y == 0) { //this.getBody().getLinearVelocity().y = vitesse verticale, si elle est à 0, son saut est finie, le personnage touche le sol.
+            this.body.applyForceToCenter(force, true); //Le body est bien reveillé donc true.
+            System.out.println("force : " + force + ",positon :" + position);
+        }
     }
 }
