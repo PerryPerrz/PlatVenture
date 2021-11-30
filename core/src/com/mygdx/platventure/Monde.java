@@ -98,16 +98,16 @@ public class Monde { //Le monde de PlatVenture
         return this.monde;
     }
 
-    public Personnage getPersonnage(){
+    public Personnage getPersonnage() {
         return this.personnage;
     }
 
     //Fonction qui met à jour le monde graphique à partir des données (maj l'affichage)
-    public void update(){
-     for (Element e : this.elementsDuMonde){
-         if(e != null){ //On vérifie que l'élement n'est pas vide (le vide du niveau)
-             e.setPosition(e.getBody().getPosition()); //On prend la position dans son body (dans les données) et on met cette position dans l'affichage.
-         }
-     }
+    public void update() {
+        for (Element e : this.elementsDuMonde) {
+            if (e != null) { //On vérifie que l'élement n'est pas vide (le vide du niveau)
+                e.setPosition(e.getBody().getPosition()); //On prend la position dans son body (dans les données) et on met cette position dans l'affichage.
+            }
+        }
     }
 }

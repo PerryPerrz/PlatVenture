@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.mygdx.platventure.PlatVenture;
-import com.mygdx.platventure.ecrans.EcranJeu;
 
 public class EcranTitre extends ScreenAdapter {
     PlatVenture platVenture;
