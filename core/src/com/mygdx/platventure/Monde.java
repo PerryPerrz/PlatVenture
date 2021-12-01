@@ -2,6 +2,7 @@ package com.mygdx.platventure;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.platventure.ecouteurs.EcouteurCollision;
 import com.mygdx.platventure.elements.Brique;
 import com.mygdx.platventure.elements.Element;
 import com.mygdx.platventure.elements.Personnage;
@@ -19,6 +20,7 @@ public class Monde { //Le monde de PlatVenture
     private final World monde; //Le monde du jeu en général, le monde ds n'importe quel jeu
     private final ArrayList<Element> elementsDuMonde;
     private Personnage personnage;
+    private EcouteurCollision collisionJoueur;
 
     public Monde(char[][] tableauNiveau) {
         this.monde = new World(new Vector2(0, -10f), true); //-10 pour la gravité
@@ -29,6 +31,10 @@ public class Monde { //Le monde de PlatVenture
                 creerElementDuMonde(tableauNiveau, i, j, tableauNiveau[i].length);
             }
         }
+
+        //Initialisation de l'écouteur collision.
+        this.collisionJoueur = new EcouteurCollision();
+        this.monde.setContactListener(this.collisionJoueur); //L'écouteur de collision écoute le monde
     }
 
     public void creerElementDuMonde(char[][] tableauNiveau, int i, int j, int tailleColonneTableau) {
