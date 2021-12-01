@@ -37,5 +37,4 @@ public abstract class Element {
     public Body getBody() {
         return body;
     }
-
 }

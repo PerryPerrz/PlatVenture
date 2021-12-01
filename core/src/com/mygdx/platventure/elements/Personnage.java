@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.mygdx.platventure.EnumTypeBody;
 
 public class Personnage extends Element {
 
@@ -64,6 +65,8 @@ public class Personnage extends Element {
             fixtureCorps.friction = this.friction;
 
             getBody().createFixture(fixtureCorps); //On ajoute la fixture au body du personnage.
+
+            this.body.setUserData(EnumTypeBody.PERSONNAGE); //On donne un identifiant pour pouvoir identifier plus tard son body, identifier le personnage lors d'une collision.
         }
         this.forme.dispose();
     }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.mygdx.platventure.EnumTypeBody;
 import com.mygdx.platventure.elements.Element;
 
 public abstract class Gemmes extends Element {
@@ -32,6 +33,8 @@ public abstract class Gemmes extends Element {
             fixture.shape = forme;
             fixture.isSensor = true; //La gemme est traversable
             getBody().createFixture(fixture); //On ajoute la fixture au body des gemmes.
+
+            this.body.setUserData(EnumTypeBody.GEMMES); //On donne un identifiant pour pouvoir identifier plus tard son body, identifier les gemmes lors d'une collision.
         }
         this.forme.dispose();
     }

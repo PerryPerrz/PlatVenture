@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.mygdx.platventure.EnumTypeBody;
 
 public class Sortie extends Element {
 
@@ -48,6 +49,8 @@ public class Sortie extends Element {
             fixture.isSensor = true;
 
             getBody().createFixture(fixture); //On ajoute la fixture au body de la sortie.
+
+            this.body.setUserData(EnumTypeBody.SORTIE); //On donne un identifiant pour pouvoir identifier plus tard son body, identifier le personnage lors d'une collision.
         }
         this.forme.dispose();
     }
