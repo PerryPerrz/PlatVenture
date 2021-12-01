@@ -40,7 +40,7 @@ public class Niveau {
         return this.tabNiveau;
     }
 
-    public int getTemps(){
+    public int getTemps() {
         return this.temps;
     }
 }
