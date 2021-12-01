@@ -73,7 +73,6 @@ public class Personnage extends Element {
         //Je n'applique la force qui si la force verticale est finie/ à fini d'être appliqué, que le personnage touche le sol
         if (this.getBody().getLinearVelocity().y <= 0.00001 && this.getBody().getLinearVelocity().y >= -0.00001) { //this.getBody().getLinearVelocity().y = vitesse verticale, si elle est à 0, son saut est finie, le personnage touche le sol. //y est un double, il faut donc le borner pour avoir une valeur précise/plus de fluidité.
             this.body.applyForceToCenter(force, true); //Le body est bien reveillé donc true.
-            System.out.println("force : " + force + ",positon :" + position);
         }
     }
 }

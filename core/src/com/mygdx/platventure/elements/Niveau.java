@@ -39,4 +39,8 @@ public class Niveau {
     public char[][] getTabNiveau() {
         return this.tabNiveau;
     }
+
+    public int getTemps(){
+        return this.temps;
+    }
 }
