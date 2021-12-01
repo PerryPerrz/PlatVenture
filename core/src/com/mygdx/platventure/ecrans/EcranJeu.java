@@ -23,7 +23,6 @@ public class EcranJeu extends ScreenAdapter {
     private final Box2DDebugRenderer debug;
     private final EcouteurEcranJeu mouvementJoueur;
     private Timer timer; //Timer de chaque niveau.
-    public int score; //Score du joueur.
 
     public EcranJeu(PlatVenture platVenture) {
         this.platVenture = platVenture;
@@ -31,7 +30,6 @@ public class EcranJeu extends ScreenAdapter {
         this.monde = new Monde(niveau.getTabNiveau());
         this.debug = new Box2DDebugRenderer();
         this.mouvementJoueur = new EcouteurEcranJeu();
-        this.score = 0;
 
         final int[] cpt = {this.niveau.getTemps()}; //On créer le compteur du niveau qui se décremente chaque seconde.
         this.timer = new Timer();

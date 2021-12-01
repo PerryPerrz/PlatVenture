@@ -9,6 +9,7 @@ import com.mygdx.platventure.elements.Personnage;
 import com.mygdx.platventure.elements.Sortie;
 import com.mygdx.platventure.elements.gemmes.GemmeJaune;
 import com.mygdx.platventure.elements.gemmes.GemmeRouge;
+import com.mygdx.platventure.elements.gemmes.Gemmes;
 import com.mygdx.platventure.elements.plateformes.Eau;
 import com.mygdx.platventure.elements.plateformes.PlateformeDroite;
 import com.mygdx.platventure.elements.plateformes.PlateformeGauche;
@@ -21,10 +22,12 @@ public class Monde { //Le monde de PlatVenture
     private final ArrayList<Element> elementsDuMonde;
     private Personnage personnage;
     private EcouteurCollision collisionJoueur;
+    public int score; //Score du joueur.
 
     public Monde(char[][] tableauNiveau) {
         this.monde = new World(new Vector2(0, -10f), true); //-10 pour la gravité
         this.elementsDuMonde = new ArrayList<>();
+        this.score = 0;
 
         for (int i = 0; i < tableauNiveau.length; ++i) {
             for (int j = 0; j < tableauNiveau[i].length; ++j) {
@@ -114,6 +117,34 @@ public class Monde { //Le monde de PlatVenture
             if (e != null) { //On vérifie que l'élement n'est pas vide (le vide du niveau)
                 e.setPosition(e.getBody().getPosition()); //On prend la position dans son body (dans les données) et on met cette position dans l'affichage.
             }
+        }
+        //On check les collisions entre le personnage et les gemmes.
+        if(this.collisionJoueur.isCollisionEntrePersoEtGemmes()){
+            Element elementTemp = null; //On ne peut pas supprimer un éleent de ce que je parcours dans un foreach. Je passe par une variable intermédiaire?
+            //On détruit la gemme.
+            for (Element e : this.elementsDuMonde) { //On parcourt les élements pour détruire la bonne gemme, la gemme qui ç bien été récup.
+                if (e.getBody() == this.collisionJoueur.getGemmes()) { //On vérifie que l'élement n'est pas vide (le vide du niveau)
+                    elementTemp = e;
+                }
+            }
+            //On incrémente le score.
+            this.score += ((Gemmes)elementTemp).getValeurGemme();
+
+            this.elementsDuMonde.remove(elementTemp); //Une fois que l'on à trouvé la gemme correspondant à celle récupérée, on remove la gemme des élements du monde.
+            this.monde.destroyBody(this.collisionJoueur.getGemmes()); //On détruit la gemme du monde qui à été touchée.
+
+            //On remet le booléen de collision à faux, la collision est finie.
+            this.collisionJoueur.setCollisionEntrePersoEtGemmes(false);
+        }
+
+        //On check les collisions entre le personnage et l'eau.
+        if(this.collisionJoueur.isCollisionEntrePersoEtEau()){
+
+        }
+
+        //On check les collisions entre le personnage et la sortie.
+        if(this.collisionJoueur.isCollisionEntrePersoEtSortie()){
+
         }
     }
 }
