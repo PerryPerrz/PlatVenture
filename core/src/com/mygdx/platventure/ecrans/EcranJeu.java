@@ -113,8 +113,8 @@ public class EcranJeu extends ScreenAdapter {
             camera.update();
         }
         //Si le personnage vient de spawn, on donne à la caméra les coordonnées de base de celle-ci et on dit que le personnage à spawn.
-        else{
-            this.camera.position.set(this.camera.viewportWidth/2,this.camera.viewportHeight/2,0);
+        else {
+            this.camera.position.set(this.camera.viewportWidth / 2, this.camera.viewportHeight / 2, 0);
             this.monde.setPersoVientDeSpawn(false);
         }
     }

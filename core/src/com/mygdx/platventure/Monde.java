@@ -192,7 +192,7 @@ public class Monde { //Le monde de PlatVenture
         }
 
         //Si le timer est terminé, le personnage meurt dans d'atroces souffrances.
-        if(this.tempsRestant[0] <= 0){
+        if (this.tempsRestant[0] <= 0) {
             this.score = 0;
             this.dispose(); //On détruit le monde.
             creerMonde(this.numeroNiveauActuel); //On doit recréer un monde en rejouant sur le même niveau.
@@ -219,11 +219,11 @@ public class Monde { //Le monde de PlatVenture
         this.timer.clear(); //On stop le timer en cours, on peut en recréer un nouveau par la suite. (éviter les timers qui se font en parallèle lors que la relance d'un niveau)
     }
 
-    public Niveau getNiveau(){
+    public Niveau getNiveau() {
         return this.niveau;
     }
 
-    public boolean isPersoVientDeSpawn(){
+    public boolean isPersoVientDeSpawn() {
         return this.persoVientDeSpawn;
     }
 
