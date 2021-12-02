@@ -94,4 +94,7 @@ public class EcouteurCollision implements ContactListener {
         this.collisionEntrePersoEtSortie = collisionEntrePersoEtSortie;
     }
 
+    public void dispose() {
+
+    }
 }

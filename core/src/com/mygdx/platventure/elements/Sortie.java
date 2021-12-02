@@ -54,4 +54,9 @@ public class Sortie extends Element {
         }
         this.forme.dispose();
     }
+
+    @Override
+    public void dispose() {
+
+    }
 }

@@ -11,4 +11,9 @@ public class GemmeRouge extends Gemmes {
     public int getValeurGemme() {
         return 2;
     }
+
+    @Override
+    public void dispose() {
+
+    }
 }

@@ -50,4 +50,9 @@ public class PlateformeMilieu extends Element {
         }
         this.forme.dispose();
     }
+
+    @Override
+    public void dispose() {
+
+    }
 }

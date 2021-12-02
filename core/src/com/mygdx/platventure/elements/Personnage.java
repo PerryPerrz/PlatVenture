@@ -78,4 +78,9 @@ public class Personnage extends Element {
             this.body.applyForceToCenter(force, true); //Le body est bien reveillé donc true.
         }
     }
+
+    @Override
+    public void dispose() {
+
+    }
 }

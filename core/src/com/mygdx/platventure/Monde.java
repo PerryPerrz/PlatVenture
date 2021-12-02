@@ -2,6 +2,7 @@ package com.mygdx.platventure;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Timer;
 import com.mygdx.platventure.ecouteurs.EcouteurCollision;
 import com.mygdx.platventure.elements.Brique;
 import com.mygdx.platventure.elements.Element;
@@ -18,20 +19,38 @@ import com.mygdx.platventure.elements.plateformes.PlateformeMilieu;
 import java.util.ArrayList;
 
 public class Monde { //Le monde de PlatVenture
-    private final World monde; //Le monde du jeu en général, le monde ds n'importe quel jeu
-    private final ArrayList<Element> elementsDuMonde;
+    private World monde; //Le monde du jeu en général, le monde ds n'importe quel jeu
+    private ArrayList<Element> elementsDuMonde;
     private Personnage personnage;
     private EcouteurCollision collisionJoueur;
+    private Niveau niveau;
+    private Timer timer; //Timer de chaque niveau.
     public int score; //Score du joueur.
 
-    public Monde(char[][] tableauNiveau) {
+    public Monde() {
+        this.score = 0;
+        creerMonde();
+    }
+
+    public void creerMonde(){
         this.monde = new World(new Vector2(0, -10f), true); //-10 pour la gravité
         this.elementsDuMonde = new ArrayList<>();
-        this.score = 0;
+        this.niveau = new Niveau("levels/level_001.txt");
 
-        for (int i = 0; i < tableauNiveau.length; ++i) {
-            for (int j = 0; j < tableauNiveau[i].length; ++j) {
-                creerElementDuMonde(tableauNiveau, i, j, tableauNiveau[i].length);
+        final int[] cpt = {this.niveau.getTemps()}; //On créer le compteur du niveau qui se décremente chaque seconde.
+        this.timer = new Timer();
+        this.timer.scheduleTask(new Timer.Task() { //On est en train de faire une tâche chronométrée. (met en place une tache durant un certian temps qui se répete)
+            @Override
+            public void run() {
+                cpt[0]--; //On décremente le compteur, on passe par un tableau car run est la fonction de la classe timer task, on à donc pas accés à la variable local cpt, donc il faut passer par un pointeur et donc un tableau.
+                System.out.println(cpt[0]);
+            }
+        }, 0, 1); //0 : délai avant que le timer commence, donc on veut ici que le timer commence direct, 1 : la frequence de répétion, soit ici toutes les 1 secondes.
+
+
+        for (int i = 0; i < this.niveau.getTabNiveau().length; ++i) {
+            for (int j = 0; j < this.niveau.getTabNiveau()[i].length; ++j) {
+                creerElementDuMonde(this.niveau.getTabNiveau(), i, j, this.niveau.getTabNiveau()[i].length);
             }
         }
 
@@ -119,7 +138,7 @@ public class Monde { //Le monde de PlatVenture
             }
         }
         //On check les collisions entre le personnage et les gemmes.
-        if(this.collisionJoueur.isCollisionEntrePersoEtGemmes()){
+        if (this.collisionJoueur.isCollisionEntrePersoEtGemmes()) {
             Element elementTemp = null; //On ne peut pas supprimer un éleent de ce que je parcours dans un foreach. Je passe par une variable intermédiaire?
             //On détruit la gemme.
             for (Element e : this.elementsDuMonde) { //On parcourt les élements pour détruire la bonne gemme, la gemme qui ç bien été récup.
@@ -128,7 +147,8 @@ public class Monde { //Le monde de PlatVenture
                 }
             }
             //On incrémente le score.
-            this.score += ((Gemmes)elementTemp).getValeurGemme();
+            this.score += ((Gemmes) elementTemp).getValeurGemme();
+            System.out.println("score :" + score);
 
             this.elementsDuMonde.remove(elementTemp); //Une fois que l'on à trouvé la gemme correspondant à celle récupérée, on remove la gemme des élements du monde.
             this.monde.destroyBody(this.collisionJoueur.getGemmes()); //On détruit la gemme du monde qui à été touchée.
@@ -138,13 +158,38 @@ public class Monde { //Le monde de PlatVenture
         }
 
         //On check les collisions entre le personnage et l'eau.
-        if(this.collisionJoueur.isCollisionEntrePersoEtEau()){
-
+        if (this.collisionJoueur.isCollisionEntrePersoEtEau()) {
+            //On restart le niveau en re-initialisant le score.
+            this.score = 0;
+            this.dispose(); //On détruit le monde.
+            creerMonde(); //On doit recréer un monde.
         }
 
         //On check les collisions entre le personnage et la sortie.
-        if(this.collisionJoueur.isCollisionEntrePersoEtSortie()){
-
+        if (this.collisionJoueur.isCollisionEntrePersoEtSortie()) {
+            //On passe au niveau suivant (lorsque l'on touche la sortie et que l'on sort de l'écran) en gardant le score.
+            this.dispose(); //On détruit le monde.
+            creerMonde(); //On doit recréer un monde.
         }
+    }
+
+    //Fonction qui détruit tous les élements utilisée avant de recréer le monde/créer un nouveau monde.
+    public void dispose(){
+        //On dispose tous les élements sauf les élements null (le vide)
+        for(Element e : this.elementsDuMonde) {
+            if (e != null) {
+                e.dispose();
+            }
+        }
+        //On vide l'ArrayList
+        this.elementsDuMonde.clear();
+        this.elementsDuMonde = null; //Il n'y à plus de références à l'ArrayList vidée, elle devient un objet mort et se fait consommer par le garbage collector.
+
+        //On clean up les autres attributs
+        this.monde.dispose();
+        this.personnage.dispose();
+        this.collisionJoueur.dispose();
+        this.niveau.dispose();
+        this.timer.clear(); //On stop le timer en cours, on peut en recréer un nouveau par la suite. (éviter les timers qui se font en parallèle lors que la relance d'un niveau)
     }
 }

@@ -1,4 +1,4 @@
-package com.mygdx.platventure.elements;
+package com.mygdx.platventure;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -42,5 +42,9 @@ public class Niveau {
 
     public int getTemps() {
         return this.temps;
+    }
+
+    public void dispose() {
+
     }
 }

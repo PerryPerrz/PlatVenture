@@ -37,4 +37,6 @@ public abstract class Element {
     public Body getBody() {
         return body;
     }
+
+    public abstract void dispose();
 }

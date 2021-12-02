@@ -6,40 +6,25 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.platventure.ecouteurs.EcouteurEcranJeu;
 import com.mygdx.platventure.Monde;
 import com.mygdx.platventure.PlatVenture;
-import com.mygdx.platventure.elements.Niveau;
 
 public class EcranJeu extends ScreenAdapter {
     private final PlatVenture platVenture;
     private Texture texture;
     private final OrthographicCamera camera;
     private final FitViewport vp;
-    private final Niveau niveau;
     private final Monde monde;
     private final Box2DDebugRenderer debug;
     private final EcouteurEcranJeu mouvementJoueur;
-    private Timer timer; //Timer de chaque niveau.
 
     public EcranJeu(PlatVenture platVenture) {
         this.platVenture = platVenture;
-        this.niveau = new Niveau("levels/level_001.txt");
-        this.monde = new Monde(niveau.getTabNiveau());
+        this.monde = new Monde();
         this.debug = new Box2DDebugRenderer();
         this.mouvementJoueur = new EcouteurEcranJeu();
-
-        final int[] cpt = {this.niveau.getTemps()}; //On créer le compteur du niveau qui se décremente chaque seconde.
-        this.timer = new Timer();
-        this.timer.scheduleTask(new Timer.Task() { //On est en train de faire une tâche chronométrée. (met en place une tache durant un certian temps qui se répete)
-            @Override
-            public void run() {
-                cpt[0]--; //On décremente le compteur, on passe par un tableau car run est la fonction de la classe timer task, on à donc pas accés à la variable local cpt, donc il faut passer par un pointeur et donc un tableau.
-                System.out.println(cpt[0]);
-            }
-        }, 0, 1); //0 : délai avant que le timer commence, donc on veut ici que le timer commence direct, 1 : la frequence de répétion, soit ici toutes les 1 secondes.
 
         int imL = Gdx.graphics.getWidth();
         int imH = Gdx.graphics.getHeight();
