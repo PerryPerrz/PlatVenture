@@ -1,14 +1,11 @@
 package com.mygdx.platventure.ecouteurs;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.platventure.EnumTypeBody;
-
-import sun.jvm.hotspot.debugger.cdbg.EnumType;
 
 public class EcouteurCollision implements ContactListener {
     private boolean collisionEntrePersoEtGemmes; //Booléen qui passe à true lorsuque la collision entre un personnage et une gemme à lieu.
@@ -31,9 +28,6 @@ public class EcouteurCollision implements ContactListener {
             if (contact.getFixtureB().getBody().getUserData() == EnumTypeBody.EAU) { //Collision entre le personnage et l'eau.
                 this.collisionEntrePersoEtEau = true;
             }
-            if (contact.getFixtureB().getBody().getUserData() == EnumTypeBody.SORTIE) { //Collision entre le personnage et la sortie..
-                this.collisionEntrePersoEtSortie = true;
-            }
         }
 
         //On gère lorsque le personnage correspond à la fixture B et l'autre élement concerné.
@@ -45,15 +39,24 @@ public class EcouteurCollision implements ContactListener {
             if (contact.getFixtureA().getBody().getUserData() == EnumTypeBody.EAU) { //Collision entre le personnage et l'eau.
                 this.collisionEntrePersoEtEau = true;
             }
-            if (contact.getFixtureA().getBody().getUserData() == EnumTypeBody.SORTIE) { //Collision entre le personnage et la sortie..
-                this.collisionEntrePersoEtSortie = true;
-            }
         }
     }
 
     @Override
     public void endContact(Contact contact) {
+        //On gère la collision personnage/sortie à la fin du contact.
+        if (contact.getFixtureA().getBody().getUserData() == EnumTypeBody.PERSONNAGE) {
+            if (contact.getFixtureB().getBody().getUserData() == EnumTypeBody.SORTIE) { //Collision entre le personnage et la sortie.
+                this.collisionEntrePersoEtSortie = true;
+            }
+        }
 
+        //On gère lorsque le personnage correspond à la fixture B et la sortie à l'élement A
+        if (contact.getFixtureB().getBody().getUserData() == EnumTypeBody.PERSONNAGE) {
+            if (contact.getFixtureA().getBody().getUserData() == EnumTypeBody.SORTIE) { //Collision entre le personnage et la sortie.
+                this.collisionEntrePersoEtSortie = true;
+            }
+        }
     }
 
     @Override
@@ -78,7 +81,7 @@ public class EcouteurCollision implements ContactListener {
         return collisionEntrePersoEtSortie;
     }
 
-    public Body getGemmes(){
+    public Body getGemmes() {
         return this.gemmes;
     }
 

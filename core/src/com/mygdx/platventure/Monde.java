@@ -26,16 +26,18 @@ public class Monde { //Le monde de PlatVenture
     private Niveau niveau;
     private Timer timer; //Timer de chaque niveau.
     public int score; //Score du joueur.
+    private int numeroNiveauActuel;
 
     public Monde() {
         this.score = 0;
-        creerMonde();
+        this.numeroNiveauActuel = 1;
+        creerMonde(this.numeroNiveauActuel);
     }
 
-    public void creerMonde(){
+    public void creerMonde(int numeroNiveau) {
         this.monde = new World(new Vector2(0, -10f), true); //-10 pour la gravité
         this.elementsDuMonde = new ArrayList<>();
-        this.niveau = new Niveau("levels/level_001.txt");
+        this.niveau = new Niveau("levels/level_00" + numeroNiveau + ".txt");
 
         final int[] cpt = {this.niveau.getTemps()}; //On créer le compteur du niveau qui se décremente chaque seconde.
         this.timer = new Timer();
@@ -162,21 +164,33 @@ public class Monde { //Le monde de PlatVenture
             //On restart le niveau en re-initialisant le score.
             this.score = 0;
             this.dispose(); //On détruit le monde.
-            creerMonde(); //On doit recréer un monde.
+            creerMonde(this.numeroNiveauActuel); //On doit recréer un monde.
         }
 
         //On check les collisions entre le personnage et la sortie.
-        if (this.collisionJoueur.isCollisionEntrePersoEtSortie()) {
-            //On passe au niveau suivant (lorsque l'on touche la sortie et que l'on sort de l'écran) en gardant le score.
-            this.dispose(); //On détruit le monde.
-            creerMonde(); //On doit recréer un monde.
+        if (this.personnage.getPosition().x >= this.niveau.getLargeur() || this.personnage.getPosition().x < -1 || this.personnage.getPosition().y < 0) { //Si le joueur sort de la droite de l'écran //Si le joueur sort de la gauche de l'écran //Si le joueur sort du bas de l'écran //-1 car sinn il ne dépasse pas la brique
+            if (this.collisionJoueur.isCollisionEntrePersoEtSortie()) { //Si il sort de l'écran en touchant la sortie, le joueur gagne.
+                //On passe au niveau suivant (lorsque l'on touche la sortie et que l'on sort de l'écran) en gardant le score.
+                this.dispose(); //On détruit le monde.
+                //On passe au niveau suivant
+                if (this.numeroNiveauActuel == 3) {
+                    this.numeroNiveauActuel = 1;
+                } else {
+                    this.numeroNiveauActuel++;
+                }
+                creerMonde(this.numeroNiveauActuel); //On doit recréer un monde en passant au niveau suivant
+            } else { //Si il sort de l'écran sans toucher la sortie, le joueur perd.
+                this.score = 0;
+                this.dispose(); //On détruit le monde.
+                creerMonde(this.numeroNiveauActuel); //On doit recréer un monde en rejouant sur le même niveau.
+            }
         }
     }
 
     //Fonction qui détruit tous les élements utilisée avant de recréer le monde/créer un nouveau monde.
-    public void dispose(){
+    public void dispose() {
         //On dispose tous les élements sauf les élements null (le vide)
-        for(Element e : this.elementsDuMonde) {
+        for (Element e : this.elementsDuMonde) {
             if (e != null) {
                 e.dispose();
             }
