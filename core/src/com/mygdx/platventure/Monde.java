@@ -28,6 +28,7 @@ public class Monde { //Le monde de PlatVenture
     public int score; //Score du joueur.
     private int numeroNiveauActuel;
     private int[] tempsRestant; //Temps restant au joueur pour finir un niveau.
+    private boolean persoVientDeSpawn;
 
     public Monde() {
         this.score = 0;
@@ -60,6 +61,8 @@ public class Monde { //Le monde de PlatVenture
         //Initialisation de l'écouteur collision.
         this.collisionJoueur = new EcouteurCollision();
         this.monde.setContactListener(this.collisionJoueur); //L'écouteur de collision écoute le monde
+
+        this.persoVientDeSpawn = true;
     }
 
     public void creerElementDuMonde(char[][] tableauNiveau, int i, int j, int tailleColonneTableau) {
@@ -140,6 +143,7 @@ public class Monde { //Le monde de PlatVenture
                 e.setPosition(e.getBody().getPosition()); //On prend la position dans son body (dans les données) et on met cette position dans l'affichage.
             }
         }
+
         //On check les collisions entre le personnage et les gemmes.
         if (this.collisionJoueur.isCollisionEntrePersoEtGemmes()) {
             Element elementTemp = null; //On ne peut pas supprimer un éleent de ce que je parcours dans un foreach. Je passe par une variable intermédiaire?
@@ -213,5 +217,17 @@ public class Monde { //Le monde de PlatVenture
         this.collisionJoueur.dispose();
         this.niveau.dispose();
         this.timer.clear(); //On stop le timer en cours, on peut en recréer un nouveau par la suite. (éviter les timers qui se font en parallèle lors que la relance d'un niveau)
+    }
+
+    public Niveau getNiveau(){
+        return this.niveau;
+    }
+
+    public boolean isPersoVientDeSpawn(){
+        return this.persoVientDeSpawn;
+    }
+
+    public void setPersoVientDeSpawn(boolean persoVientDeSpawn) {
+        this.persoVientDeSpawn = persoVientDeSpawn;
     }
 }

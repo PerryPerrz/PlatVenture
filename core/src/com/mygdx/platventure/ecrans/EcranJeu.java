@@ -55,10 +55,10 @@ public class EcranJeu extends ScreenAdapter {
         //Définition du step du monde
         monde.getMonde().step(Gdx.graphics.getDeltaTime(), 6, 2);
 
-        //Positionnement de la caméra sur le personnage.
-        camera.position.set(this.monde.getPersonnage().getPosition().x, this.monde.getPersonnage().getPosition().y, 0);
+        //On positionne la caméra selon l'emplacement du personnage.
+        this.positionnerCameraPersonnage();
         //camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
-        camera.update();
+
         this.platVenture.getBatch().setProjectionMatrix(camera.combined);
 
         //Raffraichissement de l'affichage.
@@ -79,5 +79,43 @@ public class EcranJeu extends ScreenAdapter {
         camera.update(); //Maj Caméra
 
         platVenture.getBatch().setProjectionMatrix(camera.combined); //Ré-applique la cam au spriteBatch
+    }
+
+    public void positionnerCameraPersonnage() {
+        float coordonneeXPersonnage = this.monde.getPersonnage().getPosition().x;
+        float coordonneeYPersonnage = this.monde.getPersonnage().getPosition().y;
+
+        //Si la caméra est collée au mur de gauche, et que le joueur est à gauche du centre de la caméra, alors la caméera ne bouge pas.
+        //Si la caméra est collée au mur de gauche, et que le joueur est à droite du centre de la caméra, alors, on fixe la caméra au joueur.
+        //Dimension du viewPort de la caméra = dimension de la caméra.
+        if (!this.monde.isPersoVientDeSpawn()) {
+            //La caméra suit le personnage lorque celui-ci se déplace vers la gauche.
+            if (this.camera.position.x - this.camera.viewportWidth / 2 > 0 && this.monde.getPersonnage().getPosition().x < this.camera.position.x) { //Si la caméra n'est pas collée au mur de gauche et si le joueur se déplace vers le mur de gauche, on fixe la caméra sur le joueur.
+                //On rapproche la caméra du personnage, si l'on centre la caméra sur le joueur, la caméra sort de la map...
+                this.camera.position.set(this.monde.getPersonnage().getPosition().x, this.camera.position.y, 0);
+            }
+            //La caméra suit le personnage lorque celui-ci se déplace vers la droite.
+            if (this.camera.position.x + this.camera.viewportWidth / 2 < this.monde.getNiveau().getLargeur() && this.monde.getPersonnage().getPosition().x > this.camera.position.x) { //Si la caméra n'est pas collée au mur de droite et si le joueur se déplace vers le mur de droite, on fixe la caméra sur le joueur.
+                //On rapproche la caméra du personnage, si l'on centre la caméra sur le joueur, la caméra sort de la map...
+                this.camera.position.set(this.monde.getPersonnage().getPosition().x, this.camera.position.y, 0);
+            }
+            //La caméra suit le personnage lorque celui-ci se déplace vers le haut.
+            if (this.camera.position.y + this.camera.viewportHeight / 2 < this.monde.getNiveau().getHauteur() && this.monde.getPersonnage().getPosition().y > this.camera.position.y) { //Si la caméra n'est pas collée au mur de gauche et si le joueur se déplace vers le mur de gauche, on fixe la caméra sur le joueur.
+                //On rapproche la caméra du personnage, si l'on centre la caméra sur le joueur, la caméra sort de la map...
+                this.camera.position.set(this.camera.position.x, this.monde.getPersonnage().getPosition().y, 0);
+            }
+            //La caméra suit le personnage lorque celui-ci se déplace vers le bas.
+            if (this.camera.position.y - this.camera.viewportHeight / 2 > 0 && this.monde.getPersonnage().getPosition().y < this.camera.position.y) { //Si la caméra n'est pas collée au mur de gauche et si le joueur se déplace vers le mur de gauche, on fixe la caméra sur le joueur.
+                //On rapproche la caméra du personnage, si l'on centre la caméra sur le joueur, la caméra sort de la map...
+                this.camera.position.set(this.camera.position.x, this.monde.getPersonnage().getPosition().y, 0);
+            }
+            //Maj de la caméra.
+            camera.update();
+        }
+        //Si le personnage vient de spawn, on donne à la caméra les coordonnées de base de celle-ci et on dit que le personnage à spawn.
+        else{
+            this.camera.position.set(this.camera.viewportWidth/2,this.camera.viewportHeight/2,0);
+            this.monde.setPersoVientDeSpawn(false);
+        }
     }
 }
