@@ -82,32 +82,32 @@ public class EcranJeu extends ScreenAdapter {
     }
 
     public void positionnerCameraPersonnage() {
-        float coordonneeXPersonnage = this.monde.getPersonnage().getPosition().x;
-        float coordonneeYPersonnage = this.monde.getPersonnage().getPosition().y;
+        float coordPersoX = this.monde.getPersonnage().getPosition().x;
+        float coordPersoY = this.monde.getPersonnage().getPosition().y;
 
         //Si la caméra est collée au mur de gauche, et que le joueur est à gauche du centre de la caméra, alors la caméera ne bouge pas.
         //Si la caméra est collée au mur de gauche, et que le joueur est à droite du centre de la caméra, alors, on fixe la caméra au joueur.
         //Dimension du viewPort de la caméra = dimension de la caméra.
         if (!this.monde.isPersoVientDeSpawn()) {
             //La caméra suit le personnage lorque celui-ci se déplace vers la gauche.
-            if (this.camera.position.x - this.camera.viewportWidth / 2 > 0 && this.monde.getPersonnage().getPosition().x < this.camera.position.x) { //Si la caméra n'est pas collée au mur de gauche et si le joueur se déplace vers le mur de gauche, on fixe la caméra sur le joueur.
+            if (this.camera.position.x - this.camera.viewportWidth / 2 > 0 && coordPersoX < this.camera.position.x) { //Si la caméra n'est pas collée au mur de gauche et si le joueur se déplace vers le mur de gauche, on fixe la caméra sur le joueur.
                 //On rapproche la caméra du personnage, si l'on centre la caméra sur le joueur, la caméra sort de la map...
-                this.camera.position.set(this.monde.getPersonnage().getPosition().x, this.camera.position.y, 0);
+                this.camera.position.set(coordPersoX, this.camera.position.y, 0);
             }
             //La caméra suit le personnage lorque celui-ci se déplace vers la droite.
-            if (this.camera.position.x + this.camera.viewportWidth / 2 < this.monde.getNiveau().getLargeur() && this.monde.getPersonnage().getPosition().x > this.camera.position.x) { //Si la caméra n'est pas collée au mur de droite et si le joueur se déplace vers le mur de droite, on fixe la caméra sur le joueur.
+            if (this.camera.position.x + this.camera.viewportWidth / 2 < this.monde.getNiveau().getLargeur() && coordPersoX > this.camera.position.x) { //Si la caméra n'est pas collée au mur de droite et si le joueur se déplace vers le mur de droite, on fixe la caméra sur le joueur.
                 //On rapproche la caméra du personnage, si l'on centre la caméra sur le joueur, la caméra sort de la map...
-                this.camera.position.set(this.monde.getPersonnage().getPosition().x, this.camera.position.y, 0);
+                this.camera.position.set(coordPersoX, this.camera.position.y, 0);
             }
             //La caméra suit le personnage lorque celui-ci se déplace vers le haut.
-            if (this.camera.position.y + this.camera.viewportHeight / 2 < this.monde.getNiveau().getHauteur() && this.monde.getPersonnage().getPosition().y > this.camera.position.y) { //Si la caméra n'est pas collée au mur de gauche et si le joueur se déplace vers le mur de gauche, on fixe la caméra sur le joueur.
+            if (this.camera.position.y + this.camera.viewportHeight / 2 < this.monde.getNiveau().getHauteur() && coordPersoY > this.camera.position.y) { //Si la caméra n'est pas collée au mur de gauche et si le joueur se déplace vers le mur de gauche, on fixe la caméra sur le joueur.
                 //On rapproche la caméra du personnage, si l'on centre la caméra sur le joueur, la caméra sort de la map...
-                this.camera.position.set(this.camera.position.x, this.monde.getPersonnage().getPosition().y, 0);
+                this.camera.position.set(this.camera.position.x, coordPersoY, 0);
             }
             //La caméra suit le personnage lorque celui-ci se déplace vers le bas.
-            if (this.camera.position.y - this.camera.viewportHeight / 2 > 0 && this.monde.getPersonnage().getPosition().y < this.camera.position.y) { //Si la caméra n'est pas collée au mur de gauche et si le joueur se déplace vers le mur de gauche, on fixe la caméra sur le joueur.
+            if (this.camera.position.y - this.camera.viewportHeight / 2 > 0 && coordPersoY < this.camera.position.y) { //Si la caméra n'est pas collée au mur de gauche et si le joueur se déplace vers le mur de gauche, on fixe la caméra sur le joueur.
                 //On rapproche la caméra du personnage, si l'on centre la caméra sur le joueur, la caméra sort de la map...
-                this.camera.position.set(this.camera.position.x, this.monde.getPersonnage().getPosition().y, 0);
+                this.camera.position.set(this.camera.position.x, coordPersoY, 0);
             }
             //Maj de la caméra.
             camera.update();
