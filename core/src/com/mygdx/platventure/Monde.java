@@ -27,6 +27,7 @@ public class Monde { //Le monde de PlatVenture
     private Timer timer; //Timer de chaque niveau.
     public int score; //Score du joueur.
     private int numeroNiveauActuel;
+    private int[] tempsRestant; //Temps restant au joueur pour finir un niveau.
 
     public Monde() {
         this.score = 0;
@@ -39,13 +40,13 @@ public class Monde { //Le monde de PlatVenture
         this.elementsDuMonde = new ArrayList<>();
         this.niveau = new Niveau("levels/level_00" + numeroNiveau + ".txt");
 
-        final int[] cpt = {this.niveau.getTemps()}; //On créer le compteur du niveau qui se décremente chaque seconde.
+        this.tempsRestant = new int[]{this.niveau.getTemps()}; //On créer le compteur du niveau qui se décremente chaque seconde.
         this.timer = new Timer();
         this.timer.scheduleTask(new Timer.Task() { //On est en train de faire une tâche chronométrée. (met en place une tache durant un certian temps qui se répete)
             @Override
             public void run() {
-                cpt[0]--; //On décremente le compteur, on passe par un tableau car run est la fonction de la classe timer task, on à donc pas accés à la variable local cpt, donc il faut passer par un pointeur et donc un tableau.
-                System.out.println(cpt[0]);
+                tempsRestant[0]--; //On décremente le compteur, on passe par un tableau car run est la fonction de la classe timer task, on à donc pas accés à la variable local cpt, donc il faut passer par un pointeur et donc un tableau.
+                System.out.println(tempsRestant[0]);
             }
         }, 0, 1); //0 : délai avant que le timer commence, donc on veut ici que le timer commence direct, 1 : la frequence de répétion, soit ici toutes les 1 secondes.
 
@@ -184,6 +185,13 @@ public class Monde { //Le monde de PlatVenture
                 this.dispose(); //On détruit le monde.
                 creerMonde(this.numeroNiveauActuel); //On doit recréer un monde en rejouant sur le même niveau.
             }
+        }
+
+        //Si le timer est terminé, le personnage meurt dans d'atroces souffrances.
+        if(this.tempsRestant[0] <= 0){
+            this.score = 0;
+            this.dispose(); //On détruit le monde.
+            creerMonde(this.numeroNiveauActuel); //On doit recréer un monde en rejouant sur le même niveau.
         }
     }
 
