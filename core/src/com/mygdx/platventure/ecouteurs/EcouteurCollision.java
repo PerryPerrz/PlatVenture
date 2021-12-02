@@ -8,18 +8,13 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.platventure.EnumTypeBody;
 
 public class EcouteurCollision implements ContactListener {
-    private boolean collisionEntrePersoEtGemmes; //Booléen qui passe à true lorsuque la collision entre un personnage et une gemme à lieu.
-    private boolean collisionEntrePersoEtEau;
-    private boolean collisionEntrePersoEtSortie;
-    private Body gemmes; //On récup le body des gemmes pour le détruire. (quand la gemme est recup, elle est détruite)
+    private boolean collisionEntrePersoEtGemmes = false; //Booléen qui passe à true lorsuque la collision entre un personnage et une gemme à lieu.
+    private boolean collisionEntrePersoEtEau = false;
+    private boolean collisionEntrePersoEtSortie = false;
+    private Body gemmes = null; //On récup le body des gemmes pour le détruire. (quand la gemme est recup, elle est détruite)
 
     @Override
     public void beginContact(Contact contact) {
-        this.collisionEntrePersoEtGemmes = false;
-        this.collisionEntrePersoEtEau = false;
-        this.collisionEntrePersoEtSortie = false;
-        this.gemmes = null;
-
         if (contact.getFixtureA().getBody().getUserData() == EnumTypeBody.PERSONNAGE) {
             if (contact.getFixtureB().getBody().getUserData() == EnumTypeBody.GEMMES) { //Collision entre le personnage et une gemme.
                 this.collisionEntrePersoEtGemmes = true;

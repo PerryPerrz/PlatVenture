@@ -55,8 +55,9 @@ public class EcranJeu extends ScreenAdapter {
         //Définition du step du monde
         monde.getMonde().step(Gdx.graphics.getDeltaTime(), 6, 2);
 
-        //Mise en place de la caméra.
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
+        //Positionnement de la caméra sur le personnage.
+        camera.position.set(this.monde.getPersonnage().getPosition().x, this.monde.getPersonnage().getPosition().y, 0);
+        //camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
         this.platVenture.getBatch().setProjectionMatrix(camera.combined);
 
