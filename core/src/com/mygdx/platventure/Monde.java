@@ -214,7 +214,6 @@ public class Monde { //Le monde de PlatVenture
                 }
             }, 1); //La pause dure le temps du son plouf.
         }
-        System.out.println(this.collisionJoueur.isCollisionEntrePersoEtSortie());
         //On check les collisions entre le personnage et la sortie.
         if (this.personnage.getPosition().x >= this.niveau.getLargeur() || this.personnage.getPosition().x < -1 || this.personnage.getPosition().y < 0) { //Si le joueur sort de la droite de l'écran //Si le joueur sort de la gauche de l'écran //Si le joueur sort du bas de l'écran //-1 car sinn il ne dépasse pas la brique
             if (this.collisionJoueur.isCollisionEntrePersoEtSortie()) { //Si il sort de l'écran en touchant la sortie, le joueur gagne.
@@ -261,11 +260,6 @@ public class Monde { //Le monde de PlatVenture
             }
             //On dit que la collision est finie
             this.collisionJoueur.setCollisionEntrePersoEtBriqueEtPlateformes(false);
-
-            //On reset la sortie, quand il prend la sortie sans sortir du niveau, on reset la collision.
-            //On doit reset le booléen quand on quite la sortie et qu'on est pas dans le vide/pas quitté l'écran, le seul moment ou c'est le cas, on est sur une plateforme ou sur un brique.
-            //On reset donc une fois que l'on est sur une plateforme ou sur une brique.
-            this.collisionJoueur.setCollisionEntrePersoEtSortie(false);
         }
 
         //Si le timer est terminé, le personnage meurt dans d'atroces souffrances.

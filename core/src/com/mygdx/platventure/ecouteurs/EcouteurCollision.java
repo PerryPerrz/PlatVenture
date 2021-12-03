@@ -60,12 +60,20 @@ public class EcouteurCollision implements ContactListener {
             if (contact.getFixtureB().getBody().getUserData() == EnumTypeBody.SORTIE) { //Collision entre le personnage et la sortie.
                 this.collisionEntrePersoEtSortie = true;
             }
+            else{
+                //à chaque fois qu'on sort du contact avec autre chose que la sortie, on reset la sortie.
+                this.collisionEntrePersoEtSortie = false;
+            }
         }
 
         //On gère lorsque le personnage correspond à la fixture B et la sortie à l'élement A
         if (contact.getFixtureB().getBody().getUserData() == EnumTypeBody.PERSONNAGE) {
             if (contact.getFixtureA().getBody().getUserData() == EnumTypeBody.SORTIE) { //Collision entre le personnage et la sortie.
                 this.collisionEntrePersoEtSortie = true;
+            }
+            else{
+                //à chaque fois qu'on sort du contact avec autre chose que la sortie, on reset la sortie.
+                this.collisionEntrePersoEtSortie = false;
             }
         }
     }
