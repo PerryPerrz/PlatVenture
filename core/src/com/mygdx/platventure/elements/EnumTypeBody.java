@@ -1,4 +1,4 @@
-package com.mygdx.platventure;
+package com.mygdx.platventure.elements;
 
 //Enumération qui contient tous les types de body, utilisée lors de la gestion des collisions. (= différencier les body lors des collisions)
 public enum EnumTypeBody {

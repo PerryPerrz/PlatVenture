@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.platventure.EnumTypeBody;
+import com.mygdx.platventure.elements.EnumTypeBody;
 import com.mygdx.platventure.Monde;
 import com.mygdx.platventure.PlatVenture;
 import com.mygdx.platventure.ecouteurs.EcouteurEcranJeu;
