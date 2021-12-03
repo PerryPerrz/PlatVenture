@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.mygdx.platventure.EnumTypeBody;
 import com.mygdx.platventure.elements.Element;
 
 public class PlateformeDroite extends Element {
@@ -48,6 +49,8 @@ public class PlateformeDroite extends Element {
             fixture.friction = friction;
 
             getBody().createFixture(fixture); //On ajoute la fixture au body des plateformes droites.
+
+            this.body.setUserData(EnumTypeBody.PLATEFORME_DROITE);
         }
         this.forme.dispose();
     }

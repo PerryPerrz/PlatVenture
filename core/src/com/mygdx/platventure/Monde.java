@@ -253,13 +253,9 @@ public class Monde { //Le monde de PlatVenture
         }
 
         //Collision entre le personnage et les briques/plateformes
-        if (this.collisionJoueur.isCollisionEntrePersoEtBriqueEtPlateformes()) {
-            if (this.collisionJoueur.isCollisionRapideEntrePersoEtBriqueEtPlateformes()) {
-                this.gestionnaireSons.jouerSonCollision();
-                this.collisionJoueur.setCollisionRapideEntrePersoEtBriqueEtPlateformes(false);
-            }
-            //On dit que la collision est finie
-            this.collisionJoueur.setCollisionEntrePersoEtBriqueEtPlateformes(false);
+        if (this.collisionJoueur.isCollisionRapideEntrePersoEtBriqueEtPlateformes()) {
+            this.gestionnaireSons.jouerSonCollision();
+            this.collisionJoueur.setCollisionRapideEntrePersoEtBriqueEtPlateformes(false);
         }
 
         //Si le timer est terminé, le personnage meurt dans d'atroces souffrances.

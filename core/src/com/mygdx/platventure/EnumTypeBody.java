@@ -9,5 +9,5 @@ public enum EnumTypeBody {
     BRIQUE,
     PLATEFORME_GAUCHE,
     PLATEFORME_MILIEU,
-    PLATEFORME_DROIT
+    PLATEFORME_DROITE
 }

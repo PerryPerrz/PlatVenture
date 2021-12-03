@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.mygdx.platventure.EnumTypeBody;
 
 public class Brique extends Element {
 
@@ -46,6 +47,8 @@ public class Brique extends Element {
             fixture.friction = friction;
 
             getBody().createFixture(fixture); //On ajoute la fixture au body des briques.
+
+            this.body.setUserData(EnumTypeBody.BRIQUE);
         }
         this.forme.dispose();
     }
