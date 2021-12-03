@@ -5,5 +5,9 @@ public enum EnumTypeBody {
     PERSONNAGE,
     GEMMES,
     EAU,
-    SORTIE
+    SORTIE,
+    BRIQUE,
+    PLATEFORME_GAUCHE,
+    PLATEFORME_MILIEU,
+    PLATEFORME_DROIT
 }

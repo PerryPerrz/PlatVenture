@@ -31,10 +31,14 @@ public class Monde { //Le monde de PlatVenture
     private boolean persoVientDeSpawn;
     private boolean aGagne; //Boolean qui est à true si le joueur à gagné
     private boolean jeuEstEnPause; //Boolean qui est à true qd le jeu est en pause (on pose le jeu qd le joueur gagne ou perd)
+    private final GestionnaireSons gestionnaireSons;
+    private boolean isAlerted; //Boolean qui passe à true lorsque le joueur à été alerté, pour jouer le son "alert" une seule fois.
+    private Timer timerAlert;
 
     public Monde() {
         this.score = 0;
         this.numeroNiveauActuel = 1;
+        this.gestionnaireSons = new GestionnaireSons();
         creerMonde(this.numeroNiveauActuel);
     }
 
@@ -49,7 +53,6 @@ public class Monde { //Le monde de PlatVenture
             @Override
             public void run() {
                 tempsRestant[0]--; //On décremente le compteur, on passe par un tableau car run est la fonction de la classe timer task, on à donc pas accés à la variable local cpt, donc il faut passer par un pointeur et donc un tableau.
-                System.out.println(tempsRestant[0]);
             }
         }, 0, 1); //0 : délai avant que le timer commence, donc on veut ici que le timer commence direct, 1 : la frequence de répétion, soit ici toutes les 1 secondes.
 
@@ -67,6 +70,8 @@ public class Monde { //Le monde de PlatVenture
         this.persoVientDeSpawn = true;
         this.aGagne = false;
         this.jeuEstEnPause = false;
+        this.isAlerted = false;
+        this.timerAlert = new Timer();
     }
 
     public void creerElementDuMonde(char[][] tableauNiveau, int i, int j, int tailleColonneTableau) {
@@ -148,6 +153,20 @@ public class Monde { //Le monde de PlatVenture
             }
         }
 
+        //On alerte le joueur lorsqu'il reste moins du quart du temps du niveau. (et qu'il n'a pas déjà été alerté).
+        if (this.tempsRestant[0] == this.niveau.getTemps() / 4 && !isAlerted) {
+            //On créer le tableau temportaire pour le passer dans la fonction run.
+            final Monde[] tabTemp = new Monde[1];
+            tabTemp[0] = this;
+            this.timerAlert.scheduleTask(new Timer.Task() {
+                @Override
+                public void run() {
+                    tabTemp[0].gestionnaireSons.jouerSonAlert();
+                }
+            }, 0, 1);
+            this.isAlerted = true;
+        }
+
         //On check les collisions entre le personnage et les gemmes.
         if (this.collisionJoueur.isCollisionEntrePersoEtGemmes()) {
             Element elementTemp = null; //On ne peut pas supprimer un éleent de ce que je parcours dans un foreach. Je passe par une variable intermédiaire?
@@ -157,6 +176,8 @@ public class Monde { //Le monde de PlatVenture
                     elementTemp = e;
                 }
             }
+            //On joue le son des gemmes lorsqu'elles sont récupérées
+            this.gestionnaireSons.jouerSonGemmes();
             //On incrémente le score.
             this.score += ((Gemmes) elementTemp).getValeurGemme();
             System.out.println("score :" + score);
@@ -170,25 +191,81 @@ public class Monde { //Le monde de PlatVenture
 
         //On check les collisions entre le personnage et l'eau.
         if (this.collisionJoueur.isCollisionEntrePersoEtEau()) {
-            //On restart le niveau en re-initialisant le score.
-            this.mortDuJoueur();
-        }
+            //On créer le tableau temp pour pouvoir passer le monde (this) dans la fonction run.
+            final Monde[] tabTemp = new Monde[1];
+            tabTemp[0] = this;
 
+            //On met le jeu en pause car le personnage meurt instant quand il tombe dans l'eau. (sinn problème de sons)
+            this.jeuEstEnPause = true;
+
+            //On clear le timer Alert avant les sons plouf/win/défaite pour pouvoir jouer le son de win/plouf/défaite.
+            this.timerAlert.clear();
+
+            //On joue le son "plouf" lorsque le joueur tombe dans l'eau.
+            this.gestionnaireSons.jouerSonPlouf();
+
+            //On créer le timer utilisé pour jouer les 2 sons d'affilé (jouer plouf et défaite)
+            this.timer.clear();
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    //On restart le niveau en re-initialisant le score.
+                    tabTemp[0].mortDuJoueur();
+                }
+            }, 1); //La pause dure le temps du son plouf.
+        }
+        System.out.println(this.collisionJoueur.isCollisionEntrePersoEtSortie());
         //On check les collisions entre le personnage et la sortie.
         if (this.personnage.getPosition().x >= this.niveau.getLargeur() || this.personnage.getPosition().x < -1 || this.personnage.getPosition().y < 0) { //Si le joueur sort de la droite de l'écran //Si le joueur sort de la gauche de l'écran //Si le joueur sort du bas de l'écran //-1 car sinn il ne dépasse pas la brique
             if (this.collisionJoueur.isCollisionEntrePersoEtSortie()) { //Si il sort de l'écran en touchant la sortie, le joueur gagne.
                 //On passe au niveau suivant (lorsque l'on touche la sortie et que l'on sort de l'écran) en gardant le score.
-                this.dispose(); //On détruit le monde.
+                this.aGagne = true;
+                this.jeuEstEnPause = true;
+
                 //On passe au niveau suivant
                 if (this.numeroNiveauActuel == 3) {
                     this.numeroNiveauActuel = 1;
                 } else {
                     this.numeroNiveauActuel++;
                 }
-                creerMonde(this.numeroNiveauActuel); //On doit recréer un monde en passant au niveau suivant
+
+                //On clear le timer Alert avant les sons plouf/win/défaite pour pouvoir jouer le son de win/plouf/défaite.
+                this.timerAlert.clear();
+
+                //On joue le son "win" lorsque le joueur gagne.
+                this.gestionnaireSons.jouerSonWin();
+
+                //On stock les attributs dans des tableaux pour pouvoir les passer dans fontcion run de la classe Timer. (Histoire de pointeur)
+                final int[] tableauTemp = new int[1];
+                tableauTemp[0] = this.numeroNiveauActuel;
+                //On créer le timer de pause.
+                this.timer.clear();
+
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        //this.dispose(); //On détruit le monde.
+                        creerMonde(tableauTemp[0]); //On doit recréer un monde en passant au niveau suivant
+                    }
+                }, 2); //La pause dure 2 secondes, on prévoit l'action dans la fonction run, elle se fait au bout de 2 secondes.
             } else { //Si il sort de l'écran sans toucher la sortie, le joueur perd.
                 this.mortDuJoueur();
             }
+        }
+
+        //Collision entre le personnage et les briques/plateformes
+        if (this.collisionJoueur.isCollisionEntrePersoEtBriqueEtPlateformes()) {
+            if (this.collisionJoueur.isCollisionRapideEntrePersoEtBriqueEtPlateformes()) {
+                this.gestionnaireSons.jouerSonCollision();
+                this.collisionJoueur.setCollisionRapideEntrePersoEtBriqueEtPlateformes(false);
+            }
+            //On dit que la collision est finie
+            this.collisionJoueur.setCollisionEntrePersoEtBriqueEtPlateformes(false);
+
+            //On reset la sortie, quand il prend la sortie sans sortir du niveau, on reset la collision.
+            //On doit reset le booléen quand on quite la sortie et qu'on est pas dans le vide/pas quitté l'écran, le seul moment ou c'est le cas, on est sur une plateforme ou sur un brique.
+            //On reset donc une fois que l'on est sur une plateforme ou sur une brique.
+            this.collisionJoueur.setCollisionEntrePersoEtSortie(false);
         }
 
         //Si le timer est terminé, le personnage meurt dans d'atroces souffrances.
@@ -215,6 +292,7 @@ public class Monde { //Le monde de PlatVenture
         this.collisionJoueur.dispose();
         this.niveau.dispose();
         this.timer.clear(); //On stop le timer en cours, on peut en recréer un nouveau par la suite. (éviter les timers qui se font en parallèle lors que la relance d'un niveau)
+        this.timerAlert.clear();
     }
 
     public Niveau getNiveau() {
@@ -241,11 +319,17 @@ public class Monde { //Le monde de PlatVenture
         this.jeuEstEnPause = true;
         this.score = 0;
 
+        //On clear le timer Alert avant les sons plouf/win/défaite pour pouvoir jouer le son de win/plouf/défaite.
+        this.timerAlert.clear();
+
+        //On joue le son "lose" lorsque le joueur perd.
+        this.gestionnaireSons.jouerSonDefaite();
+
         //On stock les attributs dans des tableaux pour pouvoir les passer dans fontcion run de la classe Timer. (Histoire de pointeur)
         final int[] tableauTemp = new int[1];
-        final World[] tableautTempBis = new World[1];
 
         tableauTemp[0] = this.numeroNiveauActuel;
+
         //On créer le timer de pause.
         this.timer.clear();
         Timer.schedule(new Timer.Task() {

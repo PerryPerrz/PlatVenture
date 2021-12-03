@@ -20,8 +20,11 @@ public class EcranTitre extends ScreenAdapter {
     public void show() {
         //Initialisation des données d'affichages.
         this.texture = new Texture("images/Intro.png");
+
+        //Musique d'intro du jeu.
         Music musiqueIntro = Gdx.audio.newMusic(Gdx.files.internal("sounds/win.ogg"));
         musiqueIntro.play();
+
         //Initialisation du timer
         Timer.schedule(new Timer.Task() {
             @Override

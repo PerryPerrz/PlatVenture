@@ -11,6 +11,8 @@ public class EcouteurCollision implements ContactListener {
     private boolean collisionEntrePersoEtGemmes = false; //Booléen qui passe à true lorsuque la collision entre un personnage et une gemme à lieu.
     private boolean collisionEntrePersoEtEau = false;
     private boolean collisionEntrePersoEtSortie = false;
+    private boolean collisionEntrePersoEtBriqueEtPlateformes = false;
+    private boolean collisionRapideEntrePersoEtBriqueEtPlateformes = false;
     private Body gemmes = null; //On récup le body des gemmes pour le détruire. (quand la gemme est recup, elle est détruite)
 
     @Override
@@ -23,6 +25,13 @@ public class EcouteurCollision implements ContactListener {
             if (contact.getFixtureB().getBody().getUserData() == EnumTypeBody.EAU) { //Collision entre le personnage et l'eau.
                 this.collisionEntrePersoEtEau = true;
             }
+            if (contact.getFixtureB().getBody().getUserData() == EnumTypeBody.BRIQUE || contact.getFixtureB().getBody().getUserData() == EnumTypeBody.PLATEFORME_GAUCHE || contact.getFixtureB().getBody().getUserData() == EnumTypeBody.PLATEFORME_MILIEU || contact.getFixtureB().getBody().getUserData() == EnumTypeBody.PLATEFORME_DROIT) { //Collision entre le personnage et une brique ou plateforme gauche ou plateforme milieu ou plateforme droite.
+                this.collisionEntrePersoEtBriqueEtPlateformes = true;
+                //On test si la collision entre le personnage et une brique/plateformes est rapide.
+                if (contact.getFixtureA().getBody().getLinearVelocity().x > 3 || contact.getFixtureA().getBody().getLinearVelocity().y > 3 || contact.getFixtureA().getBody().getLinearVelocity().x < -3 || contact.getFixtureA().getBody().getLinearVelocity().y < -3) {
+                    this.collisionRapideEntrePersoEtBriqueEtPlateformes = true;
+                }
+            }
         }
 
         //On gère lorsque le personnage correspond à la fixture B et l'autre élement concerné.
@@ -33,6 +42,13 @@ public class EcouteurCollision implements ContactListener {
             }
             if (contact.getFixtureA().getBody().getUserData() == EnumTypeBody.EAU) { //Collision entre le personnage et l'eau.
                 this.collisionEntrePersoEtEau = true;
+            }
+            if (contact.getFixtureA().getBody().getUserData() == EnumTypeBody.BRIQUE || contact.getFixtureA().getBody().getUserData() == EnumTypeBody.PLATEFORME_GAUCHE || contact.getFixtureA().getBody().getUserData() == EnumTypeBody.PLATEFORME_MILIEU || contact.getFixtureA().getBody().getUserData() == EnumTypeBody.PLATEFORME_DROIT) { //Collision entre le personnage et une brique ou plateforme gauche ou plateforme milieu ou plateforme droite.
+                this.collisionEntrePersoEtBriqueEtPlateformes = true;
+                //On test si la collision entre le personnage et une brique/plateformes est rapide.
+                if (contact.getFixtureB().getBody().getLinearVelocity().x > 3 || contact.getFixtureB().getBody().getLinearVelocity().y > 3 || contact.getFixtureB().getBody().getLinearVelocity().x < -3 || contact.getFixtureB().getBody().getLinearVelocity().y < -3) {
+                    this.collisionRapideEntrePersoEtBriqueEtPlateformes = true;
+                }
             }
         }
     }
@@ -76,6 +92,14 @@ public class EcouteurCollision implements ContactListener {
         return collisionEntrePersoEtSortie;
     }
 
+    public boolean isCollisionEntrePersoEtBriqueEtPlateformes() {
+        return collisionEntrePersoEtBriqueEtPlateformes;
+    }
+
+    public boolean isCollisionRapideEntrePersoEtBriqueEtPlateformes() {
+        return collisionRapideEntrePersoEtBriqueEtPlateformes;
+    }
+
     public Body getGemmes() {
         return this.gemmes;
     }
@@ -90,6 +114,14 @@ public class EcouteurCollision implements ContactListener {
 
     public void setCollisionEntrePersoEtSortie(boolean collisionEntrePersoEtSortie) {
         this.collisionEntrePersoEtSortie = collisionEntrePersoEtSortie;
+    }
+
+    public void setCollisionEntrePersoEtBriqueEtPlateformes(boolean collisionEntrePersoEtBriqueEtPlateformes) {
+        this.collisionEntrePersoEtBriqueEtPlateformes = collisionEntrePersoEtBriqueEtPlateformes;
+    }
+
+    public void setCollisionRapideEntrePersoEtBriqueEtPlateformes(boolean collisionRapideEntrePersoEtBriqueEtPlateformes) {
+        this.collisionRapideEntrePersoEtBriqueEtPlateformes = collisionRapideEntrePersoEtBriqueEtPlateformes;
     }
 
     public void dispose() {
