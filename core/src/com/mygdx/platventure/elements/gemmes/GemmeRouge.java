@@ -7,6 +7,7 @@ public class GemmeRouge extends Gemmes {
     public GemmeRouge(Vector2 position) {
         super(position);
         this.texture = new Texture("images/Gem_2.png");
+        this.animationGemmes();
     }
 
     //Si la gemme est rouge, sa valeur est 2

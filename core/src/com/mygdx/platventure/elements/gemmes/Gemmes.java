@@ -1,5 +1,7 @@
 package com.mygdx.platventure.elements.gemmes;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -10,6 +12,7 @@ import com.mygdx.platventure.elements.EnumTypeBody;
 public abstract class Gemmes extends Element {
 
     private final CircleShape forme;
+    private Animation animation;
 
     public Gemmes(Vector2 position) {
         super(position);
@@ -51,5 +54,19 @@ public abstract class Gemmes extends Element {
 
     public float getHauteur() {
         return this.hauteur;
+    }
+
+    public Animation getAnimation() {
+        return animation;
+    }
+
+    protected void animationGemmes() {
+        //On s'occupe de l'animation des gemmes
+        TextureRegion[][] textureRegions = TextureRegion.split(getTexture(), 56, 56);
+        TextureRegion[] sousTextureRegions1 = new TextureRegion[textureRegions.length];
+        for (int i = 0; i < textureRegions.length; ++i) {
+            sousTextureRegions1[i] = textureRegions[i][0];
+        }
+        animation = new Animation<>(0.2f, sousTextureRegions1);
     }
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -14,6 +15,7 @@ import com.mygdx.platventure.PlatVenture;
 import com.mygdx.platventure.ecouteurs.EcouteurEcranJeu;
 import com.mygdx.platventure.elements.Element;
 import com.mygdx.platventure.elements.EnumTypeBody;
+import com.mygdx.platventure.elements.gemmes.Gemmes;
 
 public class EcranJeu extends ScreenAdapter {
     private final PlatVenture platVenture;
@@ -24,7 +26,9 @@ public class EcranJeu extends ScreenAdapter {
     //private final Box2DDebugRenderer debug;
     private final EcouteurEcranJeu mouvementJoueur;
     private BitmapFont font;
-    private OrthographicCamera cameraTexte; //Nouvelle caméra car si on utilise l'autre caméra pour afficher le texte, étant donné la taille de l'autre caméra, le texte est beaucoup trop grand.
+    private final OrthographicCamera cameraTexte; //Nouvelle caméra car si on utilise l'autre caméra pour afficher le texte, étant donné la taille de l'autre caméra, le texte est beaucoup trop grand.
+    private int cptChangementAnimation; //Compteur incrémenté à chaque render, au bout d'un certain nombre, il change l'animation de la gemme.
+    private int numSpriteGemmes;
 
     public EcranJeu(PlatVenture platVenture) {
         this.platVenture = platVenture;
@@ -42,6 +46,8 @@ public class EcranJeu extends ScreenAdapter {
 
         //Itinitialisation caméra du texte.
         cameraTexte = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //On lui donne la taille de l'écran
+
+        this.cptChangementAnimation = 0;
     }
 
     @Override
@@ -80,10 +86,35 @@ public class EcranJeu extends ScreenAdapter {
         //On parcourt tous les élements, puis on les draw/affichent
         for (Element e : monde.getElementsDuMonde()) {
             if (e != null) {
-                if (e.getBody().getUserData() == EnumTypeBody.PERSONNAGE) //à cause de la forme du body du perso, le perso est décalé de 0.25, il faut donc le recaler. (on fixe la texture sur le body)
+                if (e.getBody().getUserData() == EnumTypeBody.PERSONNAGE) { //à cause de la forme du body du perso, le perso est décalé de 0.25, il faut donc le recaler. (on fixe la texture sur le body)
                     platVenture.getBatch().draw(e.getTexture(), e.getPosition().x + 0.25f, e.getPosition().y, e.getLargeur(), e.getHauteur());
-                else
+                } else if (e.getBody().getUserData() == EnumTypeBody.GEMMES) {
+                    TextureRegion textureRegion = new TextureRegion((TextureRegion) (((Gemmes) e).getAnimation().getKeyFrame(this.numSpriteGemmes, true)));
+                    platVenture.getBatch().draw(textureRegion, e.getPosition().x + 0.25f, e.getPosition().y + 0.25f, e.getLargeur(), e.getHauteur());
+
+                    if (this.cptChangementAnimation > 100) {
+                        this.cptChangementAnimation = 0;
+
+                        if (this.numSpriteGemmes > 5) {
+                            this.numSpriteGemmes = 0;
+                        } else {
+                            this.numSpriteGemmes++;
+                        }
+
+                    } else {
+                        this.cptChangementAnimation++;
+                    }
+                } else if (e.getBody().getUserData() == EnumTypeBody.SORTIE) {
+                    //Si la pancarte est sur le mur de gauche, on l'inverse.
+                    if (e.getPosition().x < 2) {
+                        //On étire la pancarte au sol (pr la coller), du coup je ré-adapte sa hauteur pour éviter les hitboxs fantômes.
+                        platVenture.getBatch().draw(e.getTexture(), e.getPosition().x + e.getLargeur(), e.getPosition().y - 1 / 4f, -e.getLargeur(), e.getHauteur() + 1 / 4f);
+                    } else { //Si la pancarte est sur le mur de droite, on l'affiche normalement.
+                        platVenture.getBatch().draw(e.getTexture(), e.getPosition().x, e.getPosition().y, e.getLargeur(), e.getHauteur());
+                    }
+                } else {
                     platVenture.getBatch().draw(e.getTexture(), e.getPosition().x, e.getPosition().y, e.getLargeur(), e.getHauteur());
+                }
             }
         }
 
