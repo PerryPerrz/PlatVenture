@@ -1,5 +1,6 @@
 package com.mygdx.platventure.elements.plateformes;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -29,6 +30,10 @@ public class PlateformeGauche extends Element {
         vectors[4] = new Vector2(1 / 2f, 0);
 
         this.forme.set(vectors); //On met les 5 points dans la forme. On dit que la forme d'une plateforme de gauche correspond à 5 points.
+
+        this.texture = new Texture("images/Platform_J.png");
+        this.largeur = 1f;
+        this.hauteur = 3 / 4f;
     }
 
     @Override
@@ -57,5 +62,20 @@ public class PlateformeGauche extends Element {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public Texture getTexture() {
+        return this.texture;
+    }
+
+    @Override
+    public float getLargeur() {
+        return this.largeur;
+    }
+
+    @Override
+    public float getHauteur() {
+        return this.hauteur;
     }
 }

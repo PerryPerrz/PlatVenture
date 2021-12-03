@@ -17,6 +17,9 @@ public abstract class Gemmes extends Element {
 
         this.forme.setPosition(new Vector2(1 / 2f, 1 / 2f)); //1/2 est non 0 car sinon, la gemme se trouve dans la plateforme, il faut donc la décaller. Sinon, il prend le centre de la gemme et le met en bas à droite de sa case.
         this.forme.setRadius(1 / 4f);
+
+        this.largeur = 1 / 2f; //Rayon*2
+        this.hauteur = 1 / 2f;
     }
 
     @Override
@@ -41,4 +44,12 @@ public abstract class Gemmes extends Element {
 
     //Fonction qui retourne la valeur d'une gemme selon son type (rouge ou jaune)
     public abstract int getValeurGemme();
+
+    public float getLargeur() {
+        return this.largeur;
+    }
+
+    public float getHauteur() {
+        return this.hauteur;
+    }
 }

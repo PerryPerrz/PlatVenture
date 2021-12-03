@@ -8,12 +8,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.platventure.EnumTypeBody;
 import com.mygdx.platventure.Monde;
 import com.mygdx.platventure.PlatVenture;
 import com.mygdx.platventure.ecouteurs.EcouteurEcranJeu;
+import com.mygdx.platventure.elements.Element;
 
 import java.util.Arrays;
 
@@ -23,14 +24,14 @@ public class EcranJeu extends ScreenAdapter {
     private final OrthographicCamera camera;
     private final FitViewport vp;
     private final Monde monde;
-    private final Box2DDebugRenderer debug;
+    //private final Box2DDebugRenderer debug;
     private final EcouteurEcranJeu mouvementJoueur;
     private BitmapFont font;
 
     public EcranJeu(PlatVenture platVenture) {
         this.platVenture = platVenture;
         this.monde = new Monde();
-        this.debug = new Box2DDebugRenderer();
+        //this.debug = new Box2DDebugRenderer();
         this.mouvementJoueur = new EcouteurEcranJeu();
         int imL = Gdx.graphics.getWidth();
         int imH = Gdx.graphics.getHeight();
@@ -73,10 +74,20 @@ public class EcranJeu extends ScreenAdapter {
         //Raffraichissement de l'affichage.
         ScreenUtils.clear(0, 0, 0, 0);
         this.platVenture.getBatch().begin();
-        //this.platVenture.getBatch().draw(this.texture, 0, 0, this.niveau.getLargeur(), this.niveau.getHauteur());
+        this.platVenture.getBatch().draw(this.texture, 0, 0, this.monde.getNiveau().getLargeur(), this.monde.getNiveau().getHauteur());
+
+        //On parcourt tous les élements, puis on les draw/affichent
+        for (Element e : monde.getElementsDuMonde()) {
+            if (e != null) {
+                if (e.getBody().getUserData() == EnumTypeBody.PERSONNAGE) //à cause de la forme du body du perso, le perso est décalé de 0.25, il faut donc le recaler. (on fixe la texture sur le body)
+                    platVenture.getBatch().draw(e.getTexture(), e.getPosition().x + 0.25f, e.getPosition().y, e.getLargeur(), e.getHauteur());
+                else
+                    platVenture.getBatch().draw(e.getTexture(), e.getPosition().x, e.getPosition().y, e.getLargeur(), e.getHauteur());
+            }
+        }
 
         //Mode debug
-        this.debug.render(this.monde.getMonde(), camera.combined);
+        //this.debug.render(this.monde.getMonde(), camera.combined);
 
         this.platVenture.getBatch().end();
     }

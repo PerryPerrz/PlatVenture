@@ -1,5 +1,6 @@
 package com.mygdx.platventure.elements;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -13,7 +14,7 @@ public class Brique extends Element {
     private final float restitution;
     private final float friction;
 
-    public Brique(Vector2 position) {
+    public Brique(Vector2 position, char lettreDeLaBrique) {
         super(position);
         this.forme = new PolygonShape();
         this.densite = 1f;
@@ -28,6 +29,10 @@ public class Brique extends Element {
         vectors[3] = new Vector2(1, 0);
 
         this.forme.set(vectors); //On met les 4 points dans la forme. On dit que la forme d'une brique correspond à 4 points
+
+        this.texture = new Texture("images/Brick_" + lettreDeLaBrique + ".png");
+        this.largeur = 1;
+        this.hauteur = 1;
     }
 
     @Override
@@ -56,5 +61,20 @@ public class Brique extends Element {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public Texture getTexture() {
+        return this.texture;
+    }
+
+    @Override
+    public float getLargeur() {
+        return this.largeur;
+    }
+
+    @Override
+    public float getHauteur() {
+        return this.hauteur;
     }
 }

@@ -1,5 +1,6 @@
 package com.mygdx.platventure.elements;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -9,6 +10,9 @@ public abstract class Element {
     protected Vector2 position; //(x,y) donc la position d'un élement
     protected Body body; //Caractéristiques physiques de l'élement
     protected BodyDef bodyDef; //Caractéristiques non physique de l'élement
+    protected Texture texture;
+    protected float largeur;
+    protected float hauteur;
 
     public Element(Vector2 position) {
         this.position = position;
@@ -39,4 +43,10 @@ public abstract class Element {
     }
 
     public abstract void dispose();
+
+    public abstract Texture getTexture();
+
+    public abstract float getLargeur();
+
+    public abstract float getHauteur();
 }

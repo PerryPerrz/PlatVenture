@@ -1,5 +1,6 @@
 package com.mygdx.platventure.elements.plateformes;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -29,6 +30,10 @@ public class Eau extends Element {
         vectors[3] = new Vector2(1, 0);
 
         this.forme.set(vectors); //On met les 4 points dans la forme. On dit que la forme de l'eau correspond à 4 points
+
+        this.texture = new Texture("images/Water.png");
+        this.largeur = 1f;
+        this.hauteur = 3 / 4f;
     }
 
     @Override
@@ -59,5 +64,20 @@ public class Eau extends Element {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public Texture getTexture() {
+        return this.texture;
+    }
+
+    @Override
+    public float getLargeur() {
+        return this.largeur;
+    }
+
+    @Override
+    public float getHauteur() {
+        return this.hauteur;
     }
 }

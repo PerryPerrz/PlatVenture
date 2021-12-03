@@ -89,7 +89,7 @@ public class Monde { //Le monde de PlatVenture
             case 'H':
             case 'I':
                 //La lecture se faisant dans le sens inverse, il faut faire une symétrie par rapport à l'axe des abscisses : si y est en bas à droite, on le met en haut à droite et de ce fait, l'élement est bien placé.
-                elementTemporaire = new Brique(new Vector2(i, (tailleColonneTableau - j) - 1)); //(tailleColonneTableau - j) - 1 pour remettre l'image à l'endroit. (le - 1, la lecture était décallée d'une case, une ligne non existante était affichée, tous les élements étaient décalés) le - 1 enlève ce décallage.
+                elementTemporaire = new Brique(new Vector2(i, (tailleColonneTableau - j) - 1), tableauNiveau[i][j]); //(tailleColonneTableau - j) - 1 pour remettre l'image à l'endroit. (le - 1, la lecture était décallée d'une case, une ligne non existante était affichée, tous les élements étaient décalés) le - 1 enlève ce décallage.
                 break;
             //Case représentant la plateforme gauche du jeu.
             case 'J':
@@ -337,5 +337,9 @@ public class Monde { //Le monde de PlatVenture
 
     public boolean isJeuEstEnPause() {
         return jeuEstEnPause;
+    }
+
+    public ArrayList<Element> getElementsDuMonde() {
+        return elementsDuMonde;
     }
 }
