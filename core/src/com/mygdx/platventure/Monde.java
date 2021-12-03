@@ -29,6 +29,8 @@ public class Monde { //Le monde de PlatVenture
     private int numeroNiveauActuel;
     private int[] tempsRestant; //Temps restant au joueur pour finir un niveau.
     private boolean persoVientDeSpawn;
+    private boolean aGagne; //Boolean qui est à true si le joueur à gagné
+    private boolean jeuEstEnPause; //Boolean qui est à true qd le jeu est en pause (on pose le jeu qd le joueur gagne ou perd)
 
     public Monde() {
         this.score = 0;
@@ -63,6 +65,8 @@ public class Monde { //Le monde de PlatVenture
         this.monde.setContactListener(this.collisionJoueur); //L'écouteur de collision écoute le monde
 
         this.persoVientDeSpawn = true;
+        this.aGagne = false;
+        this.jeuEstEnPause = false;
     }
 
     public void creerElementDuMonde(char[][] tableauNiveau, int i, int j, int tailleColonneTableau) {
@@ -167,9 +171,7 @@ public class Monde { //Le monde de PlatVenture
         //On check les collisions entre le personnage et l'eau.
         if (this.collisionJoueur.isCollisionEntrePersoEtEau()) {
             //On restart le niveau en re-initialisant le score.
-            this.score = 0;
-            this.dispose(); //On détruit le monde.
-            creerMonde(this.numeroNiveauActuel); //On doit recréer un monde.
+            this.mortDuJoueur();
         }
 
         //On check les collisions entre le personnage et la sortie.
@@ -185,17 +187,13 @@ public class Monde { //Le monde de PlatVenture
                 }
                 creerMonde(this.numeroNiveauActuel); //On doit recréer un monde en passant au niveau suivant
             } else { //Si il sort de l'écran sans toucher la sortie, le joueur perd.
-                this.score = 0;
-                this.dispose(); //On détruit le monde.
-                creerMonde(this.numeroNiveauActuel); //On doit recréer un monde en rejouant sur le même niveau.
+                this.mortDuJoueur();
             }
         }
 
         //Si le timer est terminé, le personnage meurt dans d'atroces souffrances.
         if (this.tempsRestant[0] <= 0) {
-            this.score = 0;
-            this.dispose(); //On détruit le monde.
-            creerMonde(this.numeroNiveauActuel); //On doit recréer un monde en rejouant sur le même niveau.
+            this.mortDuJoueur();
         }
     }
 
@@ -229,5 +227,41 @@ public class Monde { //Le monde de PlatVenture
 
     public void setPersoVientDeSpawn(boolean persoVientDeSpawn) {
         this.persoVientDeSpawn = persoVientDeSpawn;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public int[] getTempsRestant() {
+        return tempsRestant;
+    }
+
+    public void mortDuJoueur() {
+        this.jeuEstEnPause = true;
+        this.score = 0;
+
+        //On stock les attributs dans des tableaux pour pouvoir les passer dans fontcion run de la classe Timer. (Histoire de pointeur)
+        final int[] tableauTemp = new int[1];
+        final World[] tableautTempBis = new World[1];
+
+        tableauTemp[0] = this.numeroNiveauActuel;
+        //On créer le timer de pause.
+        this.timer.clear();
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                //this.dispose(); //On détruit le monde.
+                creerMonde(tableauTemp[0]); //On doit recréer un monde en rejouant sur le même niveau.
+            }
+        }, 2); //La pause dure 2 secondes, on prévoit l'action dans la fonction run, elle se fait au bout de 2 secondes.
+    }
+
+    public boolean isaGagne() {
+        return aGagne;
+    }
+
+    public boolean isJeuEstEnPause() {
+        return jeuEstEnPause;
     }
 }

@@ -2,14 +2,20 @@ package com.mygdx.platventure.ecrans;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.platventure.Monde;
 import com.mygdx.platventure.PlatVenture;
 import com.mygdx.platventure.ecouteurs.EcouteurEcranJeu;
+
+import java.util.Arrays;
 
 public class EcranJeu extends ScreenAdapter {
     private final PlatVenture platVenture;
@@ -19,13 +25,13 @@ public class EcranJeu extends ScreenAdapter {
     private final Monde monde;
     private final Box2DDebugRenderer debug;
     private final EcouteurEcranJeu mouvementJoueur;
+    private BitmapFont font;
 
     public EcranJeu(PlatVenture platVenture) {
         this.platVenture = platVenture;
         this.monde = new Monde();
         this.debug = new Box2DDebugRenderer();
         this.mouvementJoueur = new EcouteurEcranJeu();
-
         int imL = Gdx.graphics.getWidth();
         int imH = Gdx.graphics.getHeight();
 
@@ -40,6 +46,7 @@ public class EcranJeu extends ScreenAdapter {
     public void show() { //Quand les données sur l'écran apparaissent, au début de l'appli (ce fait une seule fois)
         //Initialisation des données d'affichages.
         this.texture = new Texture("images/Back.png");
+        this.defineTextFont();
 
         //On dit à l'écran de jeu que cet écouteur l'écoute.
         Gdx.input.setInputProcessor(this.mouvementJoueur);
@@ -47,13 +54,15 @@ public class EcranJeu extends ScreenAdapter {
 
     @Override
     public void render(float delta) { //Raffraichit l'affichage tous les x temps
-        //On applique la force sur le personnage.
-        this.monde.getPersonnage().appliquerForce(this.mouvementJoueur.getForce());
+        if (!this.monde.isJeuEstEnPause()) { //Dès que le joueur est en pause, on stop le monde/ne raffraichit pas le monde.
+            //On applique la force sur le personnage.
+            this.monde.getPersonnage().appliquerForce(this.mouvementJoueur.getForce());
 
-        //On met à jour les élements graphiques du monde par rapport à leurs données
-        this.monde.update();
-        //Définition du step du monde
-        monde.getMonde().step(Gdx.graphics.getDeltaTime(), 6, 2);
+            //On met à jour les élements graphiques du monde par rapport à leurs données
+            this.monde.update();
+            //Définition du step du monde
+            monde.getMonde().step(Gdx.graphics.getDeltaTime(), 6, 2);
+        }
 
         //On positionne la caméra selon l'emplacement du personnage.
         this.positionnerCameraPersonnage();
@@ -117,5 +126,37 @@ public class EcranJeu extends ScreenAdapter {
             this.camera.position.set(this.camera.viewportWidth / 2, this.camera.viewportHeight / 2, 0);
             this.monde.setPersoVientDeSpawn(false);
         }
+    }
+
+    private void renderAffichageTexte() {
+        GlyphLayout glyphLayout = new GlyphLayout();
+        String score = "Score : " + this.monde.getScore();
+        String temps = "" + Arrays.toString(this.monde.getTempsRestant());
+        this.font = new BitmapFont();
+
+        //On applique la font au temps.
+        glyphLayout.setText(font, temps);
+        font.draw(this.platVenture.getBatch(), glyphLayout, -glyphLayout.width / 2, this.camera.viewportHeight / 2 - 10);
+
+        //On applique la font au score.
+        glyphLayout.setText(font, score);
+        font.draw(this.platVenture.getBatch(), glyphLayout, this.camera.viewportWidth / 2 - glyphLayout.width, this.camera.viewportHeight / 2 - 10);
+
+
+    }
+
+    private void defineTextFont() {
+        FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Comic_Sans_MS_Bold.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter fontParam = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        //On fixe les param de la font
+        fontParam.size = (int) (60f / 1024f * Gdx.graphics.getWidth());
+        fontParam.color = Color.YELLOW;
+        fontParam.borderColor = Color.BLACK;
+        fontParam.borderWidth = 3f / 1024f * Gdx.graphics.getWidth();
+
+        font = fontGenerator.generateFont(fontParam);
+
+        fontGenerator.dispose();
     }
 }
