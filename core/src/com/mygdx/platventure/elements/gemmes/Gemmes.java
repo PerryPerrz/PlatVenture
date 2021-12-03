@@ -4,8 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.mygdx.platventure.elements.EnumTypeBody;
 import com.mygdx.platventure.elements.Element;
+import com.mygdx.platventure.elements.EnumTypeBody;
 
 public abstract class Gemmes extends Element {
 

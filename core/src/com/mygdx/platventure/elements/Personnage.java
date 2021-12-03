@@ -102,4 +102,8 @@ public class Personnage extends Element {
     public float getHauteur() {
         return this.hauteur;
     }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
 }

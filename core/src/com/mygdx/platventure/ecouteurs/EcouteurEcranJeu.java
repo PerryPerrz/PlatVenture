@@ -6,9 +6,8 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 
 public class EcouteurEcranJeu implements InputProcessor {
-    private final Vector2 force; //Force aplliquée au joueur lors de son déplacement/pour le déplacer
+    private final Vector2 force; //Force appliquée au joueur lors de son déplacement/pour le déplacer
     private long temps; //Variable qui stock le temps à laquelle le joueur appuie sur son écran, celle-ci permet de gérer le saut. (si l'utilisateur double tap son écran, le temmp entre son premier touché et son second est faible.)
-
 
     public EcouteurEcranJeu() {
         this.force = new Vector2(0, 0);
@@ -16,7 +15,7 @@ public class EcouteurEcranJeu implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-
+        //Lorsque l'utilisateur appuie sur la touche, on donne de la force.
         switch (keycode) {
             //Le saut
             case Keys.W:
@@ -37,14 +36,13 @@ public class EcouteurEcranJeu implements InputProcessor {
             case Keys.DPAD_RIGHT:
                 this.force.set(1, this.force.y); //1 sur l'axe des x, on se déplace vers la droite
                 break;
-
         }
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        //Lorsque l'utilisateur relache la touche, on arrête de donner de force, on reset la force.
+        //Lorsque l'utilisateur relache la touche, on arrête de donner de la force, on reset la force.
         switch (keycode) {
             //Le saut
             case Keys.W:

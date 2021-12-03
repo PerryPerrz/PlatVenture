@@ -6,27 +6,25 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.platventure.elements.EnumTypeBody;
 import com.mygdx.platventure.Monde;
 import com.mygdx.platventure.PlatVenture;
 import com.mygdx.platventure.ecouteurs.EcouteurEcranJeu;
 import com.mygdx.platventure.elements.Element;
-
-import java.util.Arrays;
+import com.mygdx.platventure.elements.EnumTypeBody;
 
 public class EcranJeu extends ScreenAdapter {
     private final PlatVenture platVenture;
     private Texture texture;
-    private final OrthographicCamera camera;
+    private final OrthographicCamera camera; //Caméra qui utilise la taille du monde virtuelle.
     private final FitViewport vp;
     private final Monde monde;
     //private final Box2DDebugRenderer debug;
     private final EcouteurEcranJeu mouvementJoueur;
     private BitmapFont font;
+    private OrthographicCamera cameraTexte; //Nouvelle caméra car si on utilise l'autre caméra pour afficher le texte, étant donné la taille de l'autre caméra, le texte est beaucoup trop grand.
 
     public EcranJeu(PlatVenture platVenture) {
         this.platVenture = platVenture;
@@ -41,6 +39,9 @@ public class EcranJeu extends ScreenAdapter {
         vp = new FitViewport(16f, (16f * imH) / imL, camera);
         //On met ce ViewPort sur la Caméra
         vp.apply();
+
+        //Itinitialisation caméra du texte.
+        cameraTexte = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //On lui donne la taille de l'écran
     }
 
     @Override
@@ -89,7 +90,21 @@ public class EcranJeu extends ScreenAdapter {
         //Mode debug
         //this.debug.render(this.monde.getMonde(), camera.combined);
 
-        this.platVenture.getBatch().end();
+        this.platVenture.getBatch().end(); //On stop de draw sur la caméra normal.
+
+        platVenture.getBatch().setProjectionMatrix(cameraTexte.combined);
+        platVenture.getBatch().begin(); //On draw sur la caméra texte.
+
+        font.draw(platVenture.getBatch(), "Score : " + monde.getScore(), camera.position.x + cameraTexte.viewportWidth / 2 - 7 - (int) (7 * monde.getScore() / 10f), camera.position.y + cameraTexte.viewportHeight / 2 - 7, 0, 0, false);
+        font.draw(platVenture.getBatch(), "" + monde.getTempsRestant()[0], camera.position.x, camera.position.y + cameraTexte.viewportHeight / 2 - 7, 0, 0, false);
+        if (this.monde.isJeuEstEnPause()) {
+            if (monde.isaGagne()) {
+                font.draw(platVenture.getBatch(), "Bravo :-)", camera.position.x + (cameraTexte.viewportWidth / 40) * 5, camera.position.y + camera.viewportHeight / 2, 0, 0, false);
+            } else {
+                font.draw(platVenture.getBatch(), "Dommage :-/", camera.position.x + (cameraTexte.viewportWidth / 30) * 6, camera.position.y + camera.viewportHeight / 2, 0, 0, false);
+            }
+        }
+        platVenture.getBatch().end();
     }
 
     @Override
@@ -137,23 +152,6 @@ public class EcranJeu extends ScreenAdapter {
             this.camera.position.set(this.camera.viewportWidth / 2, this.camera.viewportHeight / 2, 0);
             this.monde.setPersoVientDeSpawn(false);
         }
-    }
-
-    private void renderAffichageTexte() {
-        GlyphLayout glyphLayout = new GlyphLayout();
-        String score = "Score : " + this.monde.getScore();
-        String temps = "" + Arrays.toString(this.monde.getTempsRestant());
-        this.font = new BitmapFont();
-
-        //On applique la font au temps.
-        glyphLayout.setText(font, temps);
-        font.draw(this.platVenture.getBatch(), glyphLayout, -glyphLayout.width / 2, this.camera.viewportHeight / 2 - 10);
-
-        //On applique la font au score.
-        glyphLayout.setText(font, score);
-        font.draw(this.platVenture.getBatch(), glyphLayout, this.camera.viewportWidth / 2 - glyphLayout.width, this.camera.viewportHeight / 2 - 10);
-
-
     }
 
     private void defineTextFont() {
