@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 
 public class EcouteurEcranJeu implements InputProcessor {
     private final Vector2 force; //Force appliquée au joueur lors de son déplacement/pour le déplacer
-    private long temps; //Variable qui stock le temps à laquelle le joueur appuie sur son écran, celle-ci permet de gérer le saut. (si l'utilisateur double tap son écran, le temmp entre son premier touché et son second est faible.)
 
     public EcouteurEcranJeu() {
         this.force = new Vector2(0, 0);
@@ -17,6 +16,12 @@ public class EcouteurEcranJeu implements InputProcessor {
     public boolean keyDown(int keycode) {
         //Lorsque l'utilisateur appuie sur la touche, on donne de la force.
         switch (keycode) {
+
+            //Quitte l'appli
+            case Keys.ESCAPE:
+                Gdx.app.exit();
+                break;
+
             //Le saut
             case Keys.W:
             case Keys.Z:
@@ -74,9 +79,9 @@ public class EcouteurEcranJeu implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         long tempsActuel = System.currentTimeMillis();
         //Si la différence entre le temps sauvegardé lors du premier touché et le temps actuel est compris entre [-100;100[, alors, le joueur saute. (l'écart entre les 2 touchés est jugé trop faible (jugé par moi))
-        if (this.temps - tempsActuel >= -100 && this.temps - tempsActuel < 100) {
+        if (pointer == 1) { //pointer = 0, quand c'est la première touche, 1 quand ses 2 doigts sont collés  {
             this.force.set(this.force.x, 40);
-        } else {
+        } else if (pointer == 0) { //Pas de 3éme/4éme doigts
             //Si l'utilisateur appuie sur la partie gauche de son écran.
             if (screenX <= Gdx.graphics.getWidth() / 2) {
                 this.force.set(-1, this.force.y);
@@ -91,11 +96,14 @@ public class EcouteurEcranJeu implements InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        //On reset les forces droites et gauches lorque l'utilisateur enlève son doigt de l'écran.
-        this.force.set(0, this.force.y);
-        //On reset la force du saut, lors de son relachement
-        this.force.set(this.force.x, 0);
-        this.temps = System.currentTimeMillis(); //On récupère le temps lorsque l'utilisateur arrête de toucher son écran.
+        //On reset les forces droites et gauches lorque l'utilisateur enlève son doigt de l'écran si c'est le doigt 1 qui s'enlève.
+        if (pointer == 0) { //0 = déplacement
+            this.force.set(0, this.force.y);
+        }
+        //On reset la force du saut, lors de son relachement, si c'est le doigt 0 qui s'enlève
+        if (pointer == 1) { //1 = jump
+            this.force.set(this.force.x, 0);
+        }
         return false;
     }
 
@@ -116,7 +124,7 @@ public class EcouteurEcranJeu implements InputProcessor {
 
     public Vector2 getForce() {
         Vector2 vectorTemp = new Vector2(this.force);
-        this.force.y = 0; //On reset la force verticale. (éviter ld spam des jumps)
+        this.force.y = 0; //On reset la force verticale. (éviter le spam de jump(s))
         return vectorTemp;
     }
 }

@@ -86,8 +86,8 @@ public class EcranJeu extends ScreenAdapter {
         //On parcourt tous les élements, puis on les draw/affichent
         for (Element e : monde.getElementsDuMonde()) {
             if (e != null) {
-                if (e.getBody().getUserData() == EnumTypeBody.PERSONNAGE) { //à cause de la forme du body du perso, le perso est décalé de 0.25, il faut donc le recaler. (on fixe la texture sur le body)
-                    platVenture.getBatch().draw(e.getTexture(), e.getPosition().x + 0.25f, e.getPosition().y, e.getLargeur(), e.getHauteur());
+                if (e.getBody().getUserData() == EnumTypeBody.PERSONNAGE) {
+                    platVenture.getBatch().draw(e.getTexture(), e.getPosition().x + 0.25f, e.getPosition().y, e.getLargeur(), e.getHauteur()); //à cause de la forme du body du perso, le perso est décalé de 0.25, il faut donc le recaler. (on fixe la texture sur le body)
                 } else if (e.getBody().getUserData() == EnumTypeBody.GEMMES) {
                     TextureRegion textureRegion = new TextureRegion((TextureRegion) (((Gemmes) e).getAnimation().getKeyFrame(this.numSpriteGemmes, true)));
                     platVenture.getBatch().draw(textureRegion, e.getPosition().x + 0.25f, e.getPosition().y + 0.25f, e.getLargeur(), e.getHauteur());
@@ -106,7 +106,7 @@ public class EcranJeu extends ScreenAdapter {
                     }
                 } else if (e.getBody().getUserData() == EnumTypeBody.SORTIE) {
                     //Si la pancarte est sur le mur de gauche, on l'inverse.
-                    if (e.getPosition().x < 2) {
+                    if (e.getPosition().x < 2) { //Valeur 2 arbitraire, tant que cette valeur est dans la partie gauche de l'écran.
                         //On étire la pancarte au sol (pr la coller), du coup je ré-adapte sa hauteur pour éviter les hitboxs fantômes.
                         platVenture.getBatch().draw(e.getTexture(), e.getPosition().x + e.getLargeur(), e.getPosition().y - 1 / 4f, -e.getLargeur(), e.getHauteur() + 1 / 4f);
                     } else { //Si la pancarte est sur le mur de droite, on l'affiche normalement.
@@ -151,7 +151,7 @@ public class EcranJeu extends ScreenAdapter {
         float coordPersoX = this.monde.getPersonnage().getPosition().x;
         float coordPersoY = this.monde.getPersonnage().getPosition().y;
 
-        //Si la caméra est collée au mur de gauche, et que le joueur est à gauche du centre de la caméra, alors la caméera ne bouge pas.
+        //Si la caméra est collée au mur de gauche, et que le joueur est à gauche du centre de la caméra, alors la caméra ne bouge pas.
         //Si la caméra est collée au mur de gauche, et que le joueur est à droite du centre de la caméra, alors, on fixe la caméra au joueur.
         //Dimension du viewPort de la caméra = dimension de la caméra.
         if (!this.monde.isPersoVientDeSpawn()) {
