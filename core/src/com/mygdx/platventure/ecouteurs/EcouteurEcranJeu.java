@@ -8,10 +8,12 @@ import com.badlogic.gdx.math.Vector2;
 public class EcouteurEcranJeu implements InputProcessor {
     private final Vector2 force; //Force appliquée au joueur lors de son déplacement/pour le déplacer
     private boolean skipNiveau;
+    private boolean addScore;
 
     public EcouteurEcranJeu() {
         this.force = new Vector2(0, 0);
         this.skipNiveau = false;
+        this.addScore = false;
     }
 
     @Override
@@ -23,7 +25,10 @@ public class EcouteurEcranJeu implements InputProcessor {
                 this.skipNiveau = true;
                 break;
 
-                //Bonus : on enlève du temps au timer.
+            //Bonus : on ajoute du score au joueur.
+            case Keys.ENTER:
+               this.addScore = true;
+                break;
 
             //Quitte l'appli
             case Keys.ESCAPE:
@@ -142,5 +147,13 @@ public class EcouteurEcranJeu implements InputProcessor {
 
     public void setSkipNiveau(boolean skipNiveau) {
         this.skipNiveau = skipNiveau;
+    }
+
+    public boolean isAddScore() {
+        return addScore;
+    }
+
+    public void setAddScore(boolean addScore) {
+        this.addScore = addScore;
     }
 }

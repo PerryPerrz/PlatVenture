@@ -131,7 +131,7 @@ public class EcranJeu extends ScreenAdapter {
         platVenture.getBatch().setProjectionMatrix(cameraTexte.combined);
         platVenture.getBatch().begin(); //On draw sur la caméra texte.
 
-        font.draw(platVenture.getBatch(), "Score : " + monde.getScore(), camera.position.x + cameraTexte.viewportWidth / 2 - 7 - (int) (7 * monde.getScore() / 10f), camera.position.y + cameraTexte.viewportHeight / 2 - 7, 0, 0, false);
+        font.draw(platVenture.getBatch(), "Score : " + monde.getScore(), camera.position.x + cameraTexte.viewportWidth / 2 - 7 - (int) (7 * 11 / 10f), camera.position.y + cameraTexte.viewportHeight / 2 - 7, 0, 0, false);
         font.draw(platVenture.getBatch(), "" + monde.getTempsRestant()[0], camera.position.x, camera.position.y + cameraTexte.viewportHeight / 2 - 7, 0, 0, false);
         if (this.monde.isJeuEstEnPause()) {
             if (monde.isaGagne()) {
@@ -142,10 +142,16 @@ public class EcranJeu extends ScreenAdapter {
         }
         platVenture.getBatch().end();
 
-        //Bonus, on change passe au niveau suivant.
+        //Bonus, on passe au niveau suivant.
         if(this.mouvementJoueur.isSkipNiveau()) {
             this.monde.passerAuNiveauSuivant();
             this.mouvementJoueur.setSkipNiveau(false);
+        }
+
+        //Bonus, on augmente le score.
+        if(this.mouvementJoueur.isAddScore()) {
+            this.monde.ajouterScore();
+            this.mouvementJoueur.setAddScore(false);
         }
     }
 

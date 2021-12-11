@@ -345,4 +345,8 @@ public class Monde { //Le monde de PlatVenture
             }
         }, 2); //La pause dure 2 secondes, on prévoit l'action dans la fonction run, elle se fait au bout de 2 secondes.
     }
+
+    public void ajouterScore(){
+        this.score += 10;
+    }
 }
