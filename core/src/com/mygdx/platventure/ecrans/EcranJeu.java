@@ -150,8 +150,10 @@ public class EcranJeu extends ScreenAdapter {
         platVenture.getBatch().end();
 
         //Bonus, on passe au niveau suivant.
-        if(this.mouvementJoueur.isSkipNiveau()) {
+        if(this.mouvementJoueur.isSkipNiveau() && !this.monde.isJeuEstEnPause()) {
             this.monde.passerAuNiveauSuivant();
+            this.mouvementJoueur.setSkipNiveau(false);
+        } else if(this.monde.isJeuEstEnPause()){
             this.mouvementJoueur.setSkipNiveau(false);
         }
 

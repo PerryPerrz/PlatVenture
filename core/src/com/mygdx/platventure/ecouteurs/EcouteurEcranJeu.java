@@ -167,8 +167,4 @@ public class EcouteurEcranJeu implements InputProcessor {
     public boolean isDebugMode() {
         return debugMode;
     }
-
-    public void setDebugMode(boolean debugMode) {
-        this.debugMode = debugMode;
-    }
 }

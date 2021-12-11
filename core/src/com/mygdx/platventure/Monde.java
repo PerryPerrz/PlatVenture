@@ -1,5 +1,6 @@
 package com.mygdx.platventure;
 
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Timer;
@@ -47,6 +48,7 @@ public class Monde { //Le monde de PlatVenture
         this.elementsDuMonde = new ArrayList<>();
         this.niveau = new Niveau("levels/level_00" + numeroNiveau + ".txt");
 
+        System.out.println(this.niveau.getTemps());
         this.tempsRestant = new int[]{this.niveau.getTemps()}; //On créer le compteur du niveau qui se décremente chaque seconde.
         this.timer = new Timer();
         this.timer.scheduleTask(new Timer.Task() { //On est en train de faire une tâche chronométrée. (met en place une tache durant un certian temps qui se répete)
@@ -319,7 +321,7 @@ public class Monde { //Le monde de PlatVenture
         this.jeuEstEnPause = true;
 
         //On passe au niveau suivant
-        if (this.numeroNiveauActuel == 3) {
+        if (this.numeroNiveauActuel == 4) {
             this.numeroNiveauActuel = 1;
         } else {
             this.numeroNiveauActuel++;
