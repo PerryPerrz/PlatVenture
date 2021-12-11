@@ -1,6 +1,5 @@
 package com.mygdx.platventure;
 
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Timer;
@@ -35,6 +34,7 @@ public class Monde { //Le monde de PlatVenture
     private final GestionnaireSons gestionnaireSons;
     private boolean isAlerted; //Boolean qui passe à true lorsque le joueur à été alerté, pour jouer le son "alert" une seule fois.
     private Timer timerAlert;
+    private boolean estAuNiveau3;
 
     public Monde() {
         this.score = 0;
@@ -47,8 +47,8 @@ public class Monde { //Le monde de PlatVenture
         this.monde = new World(new Vector2(0, -10f), true); //-10 pour la gravité
         this.elementsDuMonde = new ArrayList<>();
         this.niveau = new Niveau("levels/level_00" + numeroNiveau + ".txt");
+        this.estAuNiveau3 = this.numeroNiveauActuel == 3;
 
-        System.out.println(this.niveau.getTemps());
         this.tempsRestant = new int[]{this.niveau.getTemps()}; //On créer le compteur du niveau qui se décremente chaque seconde.
         this.timer = new Timer();
         this.timer.scheduleTask(new Timer.Task() { //On est en train de faire une tâche chronométrée. (met en place une tache durant un certian temps qui se répete)
@@ -350,5 +350,9 @@ public class Monde { //Le monde de PlatVenture
 
     public void ajouterScore(){
         this.score += 10;
+    }
+
+    public boolean isEstAuNiveau3() {
+        return estAuNiveau3;
     }
 }
