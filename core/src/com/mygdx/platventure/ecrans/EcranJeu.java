@@ -190,7 +190,7 @@ public class EcranJeu extends ScreenAdapter {
         FreeTypeFontGenerator.FreeTypeFontParameter fontParam = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
         //On fixe les param de la font
-        fontParam.size = (int) (60f / 1024f * Gdx.graphics.getWidth());
+        fontParam.size = (int) (58f / 1024f * Gdx.graphics.getWidth()); //60f / 1024f * Gdx.graphics.getWidth() taille du sujet, problème sur android le "-" ne s'affiche pas, je test donc en diminuant la taille.
         fontParam.color = Color.YELLOW;
         fontParam.borderColor = Color.BLACK;
         fontParam.borderWidth = 3f / 1024f * Gdx.graphics.getWidth();
