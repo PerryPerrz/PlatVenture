@@ -180,7 +180,6 @@ public class Monde { //Le monde de PlatVenture
             this.gestionnaireSons.jouerSonGemmes();
             //On incrémente le score.
             this.score += ((Gemmes) elementTemp).getValeurGemme();
-            System.out.println("score :" + score);
 
             this.elementsDuMonde.remove(elementTemp); //Une fois que l'on à trouvé la gemme correspondant à celle récupérée, on remove la gemme des élements du monde.
             this.monde.destroyBody(this.collisionJoueur.getGemmes()); //On détruit la gemme du monde qui à été touchée.

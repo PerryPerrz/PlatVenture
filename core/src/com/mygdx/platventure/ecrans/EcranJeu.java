@@ -87,7 +87,12 @@ public class EcranJeu extends ScreenAdapter {
         for (Element e : monde.getElementsDuMonde()) {
             if (e != null) {
                 if (e.getBody().getUserData() == EnumTypeBody.PERSONNAGE) {
-                    platVenture.getBatch().draw(e.getTexture(), e.getPosition().x + 0.25f, e.getPosition().y, e.getLargeur(), e.getHauteur()); //à cause de la forme du body du perso, le perso est décalé de 0.25, il faut donc le recaler. (on fixe la texture sur le body)
+                    if(e.getBody().getLinearVelocity().x < 0){ //Le joueur va vers la gauche.
+                        platVenture.getBatch().draw(e.getTexture(), e.getPosition().x + 0.25f + e.getLargeur(), e.getPosition().y, -e.getLargeur(), e.getHauteur()); //à cause de la forme du body du perso, le perso est décalé de 0.25, il faut donc le recaler. (on fixe la texture sur le body)
+                    }else { //Le joueur va vers la droite.
+                        platVenture.getBatch().draw(e.getTexture(), e.getPosition().x + 0.25f, e.getPosition().y, e.getLargeur(), e.getHauteur()); //à cause de la forme du body du perso, le perso est décalé de 0.25, il faut donc le recaler. (on fixe la texture sur le body)
+                    }
+
                 } else if (e.getBody().getUserData() == EnumTypeBody.GEMMES) {
                     TextureRegion textureRegion = new TextureRegion((TextureRegion) (((Gemmes) e).getAnimation().getKeyFrame(this.numSpriteGemmes, true)));
                     platVenture.getBatch().draw(textureRegion, e.getPosition().x + 0.25f, e.getPosition().y + 0.25f, e.getLargeur(), e.getHauteur());
