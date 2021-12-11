@@ -5,13 +5,13 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Timer;
 import com.mygdx.platventure.ecouteurs.EcouteurCollision;
 import com.mygdx.platventure.elements.Brique;
+import com.mygdx.platventure.elements.Eau;
 import com.mygdx.platventure.elements.Element;
 import com.mygdx.platventure.elements.Personnage;
 import com.mygdx.platventure.elements.Sortie;
 import com.mygdx.platventure.elements.gemmes.GemmeJaune;
 import com.mygdx.platventure.elements.gemmes.GemmeRouge;
 import com.mygdx.platventure.elements.gemmes.Gemmes;
-import com.mygdx.platventure.elements.plateformes.Eau;
 import com.mygdx.platventure.elements.plateformes.PlateformeDroite;
 import com.mygdx.platventure.elements.plateformes.PlateformeGauche;
 import com.mygdx.platventure.elements.plateformes.PlateformeMilieu;
@@ -315,7 +315,7 @@ public class Monde { //Le monde de PlatVenture
         return elementsDuMonde;
     }
 
-    public void passerAuNiveauSuivant(){
+    public void passerAuNiveauSuivant() {
         //On passe au niveau suivant (lorsque l'on touche la sortie et que l'on sort de l'écran) en gardant le score.
         this.aGagne = true;
         this.jeuEstEnPause = true;
@@ -348,7 +348,7 @@ public class Monde { //Le monde de PlatVenture
         }, 2); //La pause dure 2 secondes, on prévoit l'action dans la fonction run, elle se fait au bout de 2 secondes.
     }
 
-    public void ajouterScore(){
+    public void ajouterScore() {
         this.score += 10;
     }
 

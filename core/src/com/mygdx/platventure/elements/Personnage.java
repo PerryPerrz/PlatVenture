@@ -82,11 +82,11 @@ public class Personnage extends Element {
             //Une fois que le personnage touche le sol :
             this.body.applyForceToCenter(force, true); //Le body est bien reveillé donc true.
 
-            if(force.y != 0){//Je donne la texture de saut.
+            if (force.y != 0) {//Je donne la texture de saut.
                 this.texture = new Texture("images/Jump__003.png");
-            }else if(force.x != 0) {//Je donne la texture de course.
+            } else if (force.x != 0) {//Je donne la texture de course.
                 this.texture = new Texture("images/Run__003.png");
-            }else {//Je donne la texture d'idle.
+            } else {//Je donne la texture d'idle.
                 this.texture = new Texture("images/Idle__000.png");
             }
         }

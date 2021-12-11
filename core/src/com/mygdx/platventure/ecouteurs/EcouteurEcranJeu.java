@@ -29,7 +29,7 @@ public class EcouteurEcranJeu implements InputProcessor {
 
             //Bonus : on ajoute du score au joueur.
             case Keys.ENTER:
-               this.addScore = true;
+                this.addScore = true;
                 break;
 
             //Bonus, on passe en mode debug.
