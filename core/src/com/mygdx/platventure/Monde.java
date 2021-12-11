@@ -216,36 +216,7 @@ public class Monde { //Le monde de PlatVenture
         //On check les collisions entre le personnage et la sortie.
         if (this.personnage.getPosition().x >= this.niveau.getLargeur() || this.personnage.getPosition().x < -1 || this.personnage.getPosition().y < 0) { //Si le joueur sort de la droite de l'écran //Si le joueur sort de la gauche de l'écran //Si le joueur sort du bas de l'écran //-1 car sinn il ne dépasse pas la brique
             if (this.collisionJoueur.isCollisionEntrePersoEtSortie()) { //Si il sort de l'écran en touchant la sortie, le joueur gagne.
-                //On passe au niveau suivant (lorsque l'on touche la sortie et que l'on sort de l'écran) en gardant le score.
-                this.aGagne = true;
-                this.jeuEstEnPause = true;
-
-                //On passe au niveau suivant
-                if (this.numeroNiveauActuel == 3) {
-                    this.numeroNiveauActuel = 1;
-                } else {
-                    this.numeroNiveauActuel++;
-                }
-
-                //On clear le timer Alert avant les sons plouf/win/défaite pour pouvoir jouer le son de win/plouf/défaite.
-                this.timerAlert.clear();
-
-                //On joue le son "win" lorsque le joueur gagne.
-                this.gestionnaireSons.jouerSonWin();
-
-                //On stock les attributs dans des tableaux pour pouvoir les passer dans fontcion run de la classe Timer. (Histoire de pointeur)
-                final int[] tableauTemp = new int[1];
-                tableauTemp[0] = this.numeroNiveauActuel;
-                //On créer le timer de pause.
-                this.timer.clear();
-
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        //this.dispose(); //On détruit le monde.
-                        creerMonde(tableauTemp[0]); //On doit recréer un monde en passant au niveau suivant
-                    }
-                }, 2); //La pause dure 2 secondes, on prévoit l'action dans la fonction run, elle se fait au bout de 2 secondes.
+                this.passerAuNiveauSuivant();
             } else { //Si il sort de l'écran sans toucher la sortie, le joueur perd.
                 this.mortDuJoueur();
             }
@@ -340,5 +311,38 @@ public class Monde { //Le monde de PlatVenture
 
     public ArrayList<Element> getElementsDuMonde() {
         return elementsDuMonde;
+    }
+
+    public void passerAuNiveauSuivant(){
+        //On passe au niveau suivant (lorsque l'on touche la sortie et que l'on sort de l'écran) en gardant le score.
+        this.aGagne = true;
+        this.jeuEstEnPause = true;
+
+        //On passe au niveau suivant
+        if (this.numeroNiveauActuel == 3) {
+            this.numeroNiveauActuel = 1;
+        } else {
+            this.numeroNiveauActuel++;
+        }
+
+        //On clear le timer Alert avant les sons plouf/win/défaite pour pouvoir jouer le son de win/plouf/défaite.
+        this.timerAlert.clear();
+
+        //On joue le son "win" lorsque le joueur gagne.
+        this.gestionnaireSons.jouerSonWin();
+
+        //On stock les attributs dans des tableaux pour pouvoir les passer dans fontcion run de la classe Timer. (Histoire de pointeur)
+        final int[] tableauTemp = new int[1];
+        tableauTemp[0] = this.numeroNiveauActuel;
+        //On créer le timer de pause.
+        this.timer.clear();
+
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                //this.dispose(); //On détruit le monde.
+                creerMonde(tableauTemp[0]); //On doit recréer un monde en passant au niveau suivant
+            }
+        }, 2); //La pause dure 2 secondes, on prévoit l'action dans la fonction run, elle se fait au bout de 2 secondes.
     }
 }

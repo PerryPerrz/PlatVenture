@@ -141,6 +141,12 @@ public class EcranJeu extends ScreenAdapter {
             }
         }
         platVenture.getBatch().end();
+
+        //Bonus, on change passe au niveau suivant.
+        if(this.mouvementJoueur.isSkipNiveau()) {
+            this.monde.passerAuNiveauSuivant();
+            this.mouvementJoueur.setSkipNiveau(false);
+        }
     }
 
     @Override
