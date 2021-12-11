@@ -9,11 +9,13 @@ public class EcouteurEcranJeu implements InputProcessor {
     private final Vector2 force; //Force appliquée au joueur lors de son déplacement/pour le déplacer
     private boolean skipNiveau;
     private boolean addScore;
+    private boolean debugMode;
 
     public EcouteurEcranJeu() {
         this.force = new Vector2(0, 0);
         this.skipNiveau = false;
         this.addScore = false;
+        this.debugMode = false;
     }
 
     @Override
@@ -28,6 +30,11 @@ public class EcouteurEcranJeu implements InputProcessor {
             //Bonus : on ajoute du score au joueur.
             case Keys.ENTER:
                this.addScore = true;
+                break;
+
+            //Bonus, on passe en mode debug.
+            case Keys.ALT_LEFT:
+                this.debugMode = !this.debugMode;
                 break;
 
             //Quitte l'appli
@@ -155,5 +162,13 @@ public class EcouteurEcranJeu implements InputProcessor {
 
     public void setAddScore(boolean addScore) {
         this.addScore = addScore;
+    }
+
+    public boolean isDebugMode() {
+        return debugMode;
+    }
+
+    public void setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
     }
 }

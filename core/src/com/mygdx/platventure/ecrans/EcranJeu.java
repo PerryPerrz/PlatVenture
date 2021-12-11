@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.platventure.Monde;
@@ -23,7 +24,7 @@ public class EcranJeu extends ScreenAdapter {
     private final OrthographicCamera camera; //Caméra qui utilise la taille du monde virtuelle.
     private final FitViewport vp;
     private final Monde monde;
-    //private final Box2DDebugRenderer debug;
+    private final Box2DDebugRenderer debug;
     private final EcouteurEcranJeu mouvementJoueur;
     private BitmapFont font;
     private final OrthographicCamera cameraTexte; //Nouvelle caméra car si on utilise l'autre caméra pour afficher le texte, étant donné la taille de l'autre caméra, le texte est beaucoup trop grand.
@@ -33,7 +34,7 @@ public class EcranJeu extends ScreenAdapter {
     public EcranJeu(PlatVenture platVenture) {
         this.platVenture = platVenture;
         this.monde = new Monde();
-        //this.debug = new Box2DDebugRenderer();
+        this.debug = new Box2DDebugRenderer();
         this.mouvementJoueur = new EcouteurEcranJeu();
         int imL = Gdx.graphics.getWidth();
         int imH = Gdx.graphics.getHeight();
@@ -81,65 +82,71 @@ public class EcranJeu extends ScreenAdapter {
         //Raffraichissement de l'affichage.
         ScreenUtils.clear(0, 0, 0, 0);
         this.platVenture.getBatch().begin();
-        this.platVenture.getBatch().draw(this.texture, 0, 0, this.monde.getNiveau().getLargeur(), this.monde.getNiveau().getHauteur());
+        if(!this.mouvementJoueur.isDebugMode()) {
+            this.platVenture.getBatch().draw(this.texture, 0, 0, this.monde.getNiveau().getLargeur(), this.monde.getNiveau().getHauteur());
 
-        //On parcourt tous les élements, puis on les draw/affichent
-        for (Element e : monde.getElementsDuMonde()) {
-            if (e != null) {
-                if (e.getBody().getUserData() == EnumTypeBody.PERSONNAGE) {
-                    if(e.getBody().getLinearVelocity().x < 0){ //Le joueur va vers la gauche.
-                        platVenture.getBatch().draw(e.getTexture(), e.getPosition().x + 0.25f + e.getLargeur(), e.getPosition().y, -e.getLargeur(), e.getHauteur()); //à cause de la forme du body du perso, le perso est décalé de 0.25, il faut donc le recaler. (on fixe la texture sur le body)
-                    }else { //Le joueur va vers la droite.
-                        platVenture.getBatch().draw(e.getTexture(), e.getPosition().x + 0.25f, e.getPosition().y, e.getLargeur(), e.getHauteur()); //à cause de la forme du body du perso, le perso est décalé de 0.25, il faut donc le recaler. (on fixe la texture sur le body)
-                    }
-
-                } else if (e.getBody().getUserData() == EnumTypeBody.GEMMES) {
-                    TextureRegion textureRegion = new TextureRegion((TextureRegion) (((Gemmes) e).getAnimation().getKeyFrame(this.numSpriteGemmes, true)));
-                    platVenture.getBatch().draw(textureRegion, e.getPosition().x + 0.25f, e.getPosition().y + 0.25f, e.getLargeur(), e.getHauteur());
-
-                    if (this.cptChangementAnimation > 100) {
-                        this.cptChangementAnimation = 0;
-
-                        if (this.numSpriteGemmes > 5) {
-                            this.numSpriteGemmes = 0;
-                        } else {
-                            this.numSpriteGemmes++;
+            //On parcourt tous les élements, puis on les draw/affichent
+            for (Element e : monde.getElementsDuMonde()) {
+                if (e != null) {
+                    if (e.getBody().getUserData() == EnumTypeBody.PERSONNAGE) {
+                        if (e.getBody().getLinearVelocity().x < 0) { //Le joueur va vers la gauche.
+                            platVenture.getBatch().draw(e.getTexture(), e.getPosition().x + 0.25f + e.getLargeur(), e.getPosition().y, -e.getLargeur(), e.getHauteur()); //à cause de la forme du body du perso, le perso est décalé de 0.25, il faut donc le recaler. (on fixe la texture sur le body)
+                        } else { //Le joueur va vers la droite.
+                            platVenture.getBatch().draw(e.getTexture(), e.getPosition().x + 0.25f, e.getPosition().y, e.getLargeur(), e.getHauteur()); //à cause de la forme du body du perso, le perso est décalé de 0.25, il faut donc le recaler. (on fixe la texture sur le body)
                         }
 
+                    } else if (e.getBody().getUserData() == EnumTypeBody.GEMMES) {
+                        TextureRegion textureRegion = new TextureRegion((TextureRegion) (((Gemmes) e).getAnimation().getKeyFrame(this.numSpriteGemmes, true)));
+                        platVenture.getBatch().draw(textureRegion, e.getPosition().x + 0.25f, e.getPosition().y + 0.25f, e.getLargeur(), e.getHauteur());
+
+                        if (this.cptChangementAnimation > 100) {
+                            this.cptChangementAnimation = 0;
+
+                            if (this.numSpriteGemmes > 5) {
+                                this.numSpriteGemmes = 0;
+                            } else {
+                                this.numSpriteGemmes++;
+                            }
+
+                        } else {
+                            this.cptChangementAnimation++;
+                        }
+                    } else if (e.getBody().getUserData() == EnumTypeBody.SORTIE) {
+                        //Si la pancarte est sur le mur de gauche, on l'inverse.
+                        if (e.getPosition().x < 2) { //Valeur 2 arbitraire, tant que cette valeur est dans la partie gauche de l'écran.
+                            //On étire la pancarte au sol (pr la coller), du coup je ré-adapte sa hauteur pour éviter les hitboxs fantômes.
+                            platVenture.getBatch().draw(e.getTexture(), e.getPosition().x + e.getLargeur(), e.getPosition().y - 1 / 4f, -e.getLargeur(), e.getHauteur() + 1 / 4f);
+                        } else { //Si la pancarte est sur le mur de droite, on l'affiche normalement.
+                            platVenture.getBatch().draw(e.getTexture(), e.getPosition().x, e.getPosition().y, e.getLargeur(), e.getHauteur());
+                        }
                     } else {
-                        this.cptChangementAnimation++;
-                    }
-                } else if (e.getBody().getUserData() == EnumTypeBody.SORTIE) {
-                    //Si la pancarte est sur le mur de gauche, on l'inverse.
-                    if (e.getPosition().x < 2) { //Valeur 2 arbitraire, tant que cette valeur est dans la partie gauche de l'écran.
-                        //On étire la pancarte au sol (pr la coller), du coup je ré-adapte sa hauteur pour éviter les hitboxs fantômes.
-                        platVenture.getBatch().draw(e.getTexture(), e.getPosition().x + e.getLargeur(), e.getPosition().y - 1 / 4f, -e.getLargeur(), e.getHauteur() + 1 / 4f);
-                    } else { //Si la pancarte est sur le mur de droite, on l'affiche normalement.
                         platVenture.getBatch().draw(e.getTexture(), e.getPosition().x, e.getPosition().y, e.getLargeur(), e.getHauteur());
                     }
-                } else {
-                    platVenture.getBatch().draw(e.getTexture(), e.getPosition().x, e.getPosition().y, e.getLargeur(), e.getHauteur());
                 }
             }
         }
-
-        //Mode debug
-        //this.debug.render(this.monde.getMonde(), camera.combined);
+        else {
+            //Mode debug
+            this.debug.render(this.monde.getMonde(), camera.combined);
+        }
 
         this.platVenture.getBatch().end(); //On stop de draw sur la caméra normal.
 
         platVenture.getBatch().setProjectionMatrix(cameraTexte.combined);
         platVenture.getBatch().begin(); //On draw sur la caméra texte.
 
-        font.draw(platVenture.getBatch(), "Score : " + monde.getScore(), camera.position.x + cameraTexte.viewportWidth / 2 - 7 - (int) (7 * 11 / 10f), camera.position.y + cameraTexte.viewportHeight / 2 - 7, 0, 0, false);
-        font.draw(platVenture.getBatch(), "" + monde.getTempsRestant()[0], camera.position.x, camera.position.y + cameraTexte.viewportHeight / 2 - 7, 0, 0, false);
-        if (this.monde.isJeuEstEnPause()) {
-            if (monde.isaGagne()) {
-                font.draw(platVenture.getBatch(), "Bravo :-)", camera.position.x + (cameraTexte.viewportWidth / 40) * 5, camera.position.y + camera.viewportHeight / 2, 0, 0, false);
-            } else {
-                font.draw(platVenture.getBatch(), "Dommage :-/", camera.position.x + (cameraTexte.viewportWidth / 30) * 6, camera.position.y + camera.viewportHeight / 2, 0, 0, false);
+        if(!this.mouvementJoueur.isDebugMode()) {
+            font.draw(platVenture.getBatch(), "Score : " + monde.getScore(), camera.position.x + cameraTexte.viewportWidth / 2 - 7 - (int) (7 * 11 / 10f), camera.position.y + cameraTexte.viewportHeight / 2 - 7, 0, 0, false);
+            font.draw(platVenture.getBatch(), "" + monde.getTempsRestant()[0], camera.position.x, camera.position.y + cameraTexte.viewportHeight / 2 - 7, 0, 0, false);
+            if (this.monde.isJeuEstEnPause()) {
+                if (monde.isaGagne()) {
+                    font.draw(platVenture.getBatch(), "Bravo :-)", camera.position.x + (cameraTexte.viewportWidth / 40) * 5, camera.position.y + camera.viewportHeight / 2, 0, 0, false);
+                } else {
+                    font.draw(platVenture.getBatch(), "Dommage :-/", camera.position.x + (cameraTexte.viewportWidth / 30) * 6, camera.position.y + camera.viewportHeight / 2, 0, 0, false);
+                }
             }
         }
+
         platVenture.getBatch().end();
 
         //Bonus, on passe au niveau suivant.
