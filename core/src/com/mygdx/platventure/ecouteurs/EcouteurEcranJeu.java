@@ -6,7 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 
 public class EcouteurEcranJeu implements InputProcessor {
-    private final Vector2 force; //Force appliquée au joueur lors de son déplacement/pour le déplacer
+    private final Vector2 force; //Force appliquée au joueur lors de son déplacement/pour le déplacer.
     private boolean skipNiveau;
     private boolean addScore;
     private boolean debugMode;

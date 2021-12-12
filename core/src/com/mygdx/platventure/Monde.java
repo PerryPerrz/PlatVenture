@@ -19,7 +19,7 @@ import com.mygdx.platventure.elements.plateformes.PlateformeMilieu;
 import java.util.ArrayList;
 
 public class Monde { //Le monde de PlatVenture
-    private World monde; //Le monde du jeu en général, le monde ds n'importe quel jeu
+    private World monde; //Le monde du jeu en général, le monde dans n'importe quel jeu
     private ArrayList<Element> elementsDuMonde;
     private Personnage personnage;
     private EcouteurCollision collisionJoueur;
@@ -67,7 +67,7 @@ public class Monde { //Le monde de PlatVenture
 
         //Initialisation de l'écouteur collision.
         this.collisionJoueur = new EcouteurCollision();
-        this.monde.setContactListener(this.collisionJoueur); //L'écouteur de collision écoute le monde
+        this.monde.setContactListener(this.collisionJoueur); //L'écouteur de collision écoute le monde.
 
         this.persoVientDeSpawn = true;
         this.aGagne = false;

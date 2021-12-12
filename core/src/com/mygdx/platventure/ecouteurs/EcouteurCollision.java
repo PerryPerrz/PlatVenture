@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.platventure.elements.EnumTypeBody;
 
 public class EcouteurCollision implements ContactListener {
-    private boolean collisionEntrePersoEtGemmes = false; //Booléen qui passe à true lorsuque la collision entre un personnage et une gemme à lieu.
+    private boolean collisionEntrePersoEtGemmes = false; //Booléen qui passe à true lorsque la collision entre un personnage et une gemme à lieu.
     private boolean collisionEntrePersoEtEau = false;
     private boolean collisionEntrePersoEtSortie = false;
     private boolean collisionRapideEntrePersoEtBriqueEtPlateformes = false;

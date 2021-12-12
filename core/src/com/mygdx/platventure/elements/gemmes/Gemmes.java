@@ -37,7 +37,7 @@ public abstract class Gemmes extends Element {
         if (this.bodyDef != null && this.body != null) {
             FixtureDef fixture = new FixtureDef();
             fixture.shape = forme;
-            fixture.isSensor = true; //La gemme est traversable
+            fixture.isSensor = true; //La gemme est traversable.
             getBody().createFixture(fixture); //On ajoute la fixture au body des gemmes.
 
             this.body.setUserData(EnumTypeBody.GEMMES); //On donne un identifiant pour pouvoir identifier plus tard son body, identifier les gemmes lors d'une collision.
@@ -45,7 +45,7 @@ public abstract class Gemmes extends Element {
         this.forme.dispose();
     }
 
-    //Fonction qui retourne la valeur d'une gemme selon son type (rouge ou jaune)
+    //Fonction abstraite qui retourne la valeur d'une gemme selon son type (rouge ou jaune)
     public abstract int getValeurGemme();
 
     public float getLargeur() {

@@ -39,13 +39,13 @@ public class EcranJeu extends ScreenAdapter {
         int imL = Gdx.graphics.getWidth();
         int imH = Gdx.graphics.getHeight();
 
-        //Initialisation de la Caméra et du ViewPort
+        //Initialisation de la caméra et du ViewPort
         camera = new OrthographicCamera();
         vp = new FitViewport(16f, (16f * imH) / imL, camera);
         //On met ce ViewPort sur la Caméra
         vp.apply();
 
-        //Itinitialisation caméra du texte.
+        //Initialisation de la caméra du texte.
         cameraTexte = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //On lui donne la taille de l'écran
 
         this.cptChangementAnimation = 0;
